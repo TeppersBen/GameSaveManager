@@ -1,5 +1,7 @@
 package com.managers;
 
+import com.frames.SavesManagerFrame;
+import com.frames.SavesManagerWorldTile;
 import com.utils.TreeCopyFileVisitor;
 
 import java.io.File;
@@ -73,6 +75,21 @@ public class SavesManager {
         }
     }
 
+    public String purgeWorldFolder(String fileName) {
+        loadSavesContent();
+        List<Path> toDelete = files.stream().filter(e -> e.toFile().getName().contains(fileName)).collect(Collectors.toList());
+        AtomicLong sum = new AtomicLong();
+        try {
+            Files.walk(toDelete.get(0)).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(e -> {
+                sum.addAndGet(e.length());
+                e.delete();
+            });
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "A total of " + calculateMiB(sum.longValue()) + " MiB was purged!";
+    }
+
     public String purgeOldBackups() {
         loadSavesContent();
         List<Path> toDeleted = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
@@ -93,10 +110,10 @@ public class SavesManager {
         return "No old backups were located!";
     }
 
-    public String purgeUnnecessaryChunks() {
-        File overworld = new File(minecraftSavesFolder + "MinecraftJavaSurvival/region/");
-        File nether = new File(minecraftSavesFolder + "MinecraftJavaSurvival/DIM-1/region/");
-        File end = new File(minecraftSavesFolder + "MinecraftJavaSurvival/DIM1/region/");
+    public String purgeUnnecessaryChunks(String worldName) {
+        File overworld = new File(minecraftSavesFolder + worldName + "/region/");
+        File nether = new File(minecraftSavesFolder + worldName + "/DIM-1/region/");
+        File end = new File(minecraftSavesFolder + worldName + "/DIM1/region/");
         long sum = 0;
         sum += purgeSpecificMap(overworld, importantChunksOverworld);
         sum += purgeSpecificMap(nether, importantChunksNether);

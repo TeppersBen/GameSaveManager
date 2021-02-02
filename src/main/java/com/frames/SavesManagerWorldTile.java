@@ -59,6 +59,7 @@ public class SavesManagerWorldTile extends BorderPane {
             } catch (IOException ex) {
                 ex.printStackTrace();
             } finally {
+                assert inputStream != null;
                 inputStream.close();
             }
         } catch (IOException e) {

@@ -1,0 +1,33 @@
+.root {
+    -fx-background-color: #5b5c5b;
+
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #5b5c5b;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #5b5c5b;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #FFD700;
+    -fx-stroke-width: 3pt;
+}
+
+Label,JFXButton {
+    -fx-text-fill: white;
+}
+
+JFXListView {
+    -fx-background-color: #313335;
+}
+
+.list-cell {
+    -fx-background-color: #2b2b2b;
+}
+
+.list-cell:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+}

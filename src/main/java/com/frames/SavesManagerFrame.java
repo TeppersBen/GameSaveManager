@@ -20,6 +20,7 @@ public class SavesManagerFrame extends BorderPane {
     private JFXButton purgeOldBackupsButton;
 
     private Label totalFolderSizeLabel;
+    private Label actionPerformedLabel;
 
     public SavesManagerFrame() {
         initComponents();
@@ -52,33 +53,35 @@ public class SavesManagerFrame extends BorderPane {
         refreshContentButton = new JFXButton("Refresh Table");
         totalFolderSizeLabel = new Label("Total size: " + totalFolderSize + " MiB");
         purgeOldBackupsButton = new JFXButton("Purge Old Backups");
-
-        listViewOptions.getItems().addAll(
-                refreshContentButton,
-                createBackupButton,
-                purgeOldBackupsButton
-        );
+        actionPerformedLabel = new Label();
     }
 
     private void initListeners() {
         createBackupButton.setOnAction(e -> {
             ThreadHandler.initFXThread(() -> {
-                savesManager.createBackup();
+                setActionPerformedText(savesManager.createBackup());
                 refreshContent();
             });
         });
 
         refreshContentButton.setOnAction(e -> {
+            setActionPerformedText("Refreshed table");
             refreshContent();
         });
 
         purgeOldBackupsButton.setOnAction(e -> {
-            savesManager.purgeOldBackups();
+            setActionPerformedText(savesManager.purgeOldBackups());
             refreshContent();
         });
     }
 
     private void layoutComponents() {
+        listViewOptions.getItems().addAll(
+                refreshContentButton,
+                createBackupButton,
+                purgeOldBackupsButton
+        );
+
         listViewWorlds.setExpanded(true);
         listViewWorlds.setDepth(1);
         listViewWorlds.setVerticalGap(3.0);
@@ -89,7 +92,16 @@ public class SavesManagerFrame extends BorderPane {
 
         setCenter(listViewWorlds);
         setRight(listViewOptions);
-        setBottom(totalFolderSizeLabel);
+
+        BorderPane bottomPane = new BorderPane();
+        bottomPane.setLeft(totalFolderSizeLabel);
+        bottomPane.setRight(actionPerformedLabel);
+        setBottom(bottomPane);
+    }
+
+    public void setActionPerformedText(String text) {
+        actionPerformedLabel.setText(text);
+        //TODO :: make the text dissapear after 3 seconds.
     }
 
 }

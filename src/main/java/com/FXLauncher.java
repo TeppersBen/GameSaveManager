@@ -16,6 +16,7 @@ public class FXLauncher extends Application {
         stage.setTitle("MinecraftJavaSurvival World Manager");
         stage.setResizable(false);
         Scene scene = new Scene(new MainFrame(), 1021, 550);
+        scene.getStylesheets().add("stylesheet.css");
         stage.setScene(scene);
         stage.show();
     }

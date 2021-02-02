@@ -3,6 +3,7 @@ package com.frames;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.managers.SavesManager;
+import com.utils.ThreadHandler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -61,8 +62,10 @@ public class SavesManagerFrame extends BorderPane {
 
     private void initListeners() {
         createBackupButton.setOnAction(e -> {
-            savesManager.createBackup();
-            refreshContent();
+            ThreadHandler.initFXThread(() -> {
+                savesManager.createBackup();
+                refreshContent();
+            });
         });
 
         refreshContentButton.setOnAction(e -> {

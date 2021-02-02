@@ -12,9 +12,9 @@ public class FXLauncher extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setTitle("MinecraftJavaSurvival World Manager");
-        //stage.setResizable(false);
+        stage.setResizable(false);
         Scene scene = new Scene(new MainFrame(), 1021, 550);
         stage.setScene(scene);
         stage.show();

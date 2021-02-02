@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,12 +18,11 @@ public class SavesManagerWorldTile extends BorderPane {
     private final Object[] data;
     private final boolean isPrimaryWorld;
 
-    private SavesManagerFrame parentFrame;
+    private final SavesManagerFrame parentFrame;
 
     private String worldName;
     private String worldSize;
 
-    private Image worldIcon;
     private ImageView worldIconView;
 
     private JFXButton wipeUnnecessaryChunksButton;
@@ -54,7 +52,7 @@ public class SavesManagerWorldTile extends BorderPane {
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(sourcePath + "/icon.png");
-                worldIcon = new Image(inputStream);
+                Image worldIcon = new Image(inputStream);
                 worldIconView = new ImageView(worldIcon);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -69,17 +67,17 @@ public class SavesManagerWorldTile extends BorderPane {
 
     private void initListeners() {
         wipeUnnecessaryChunksButton.setOnAction(e -> {
-            new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0]));
+            parentFrame.setActionPerformedText(new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0])));
             parentFrame.refreshContent();
         });
 
         deleteBackupButton.setOnAction(e -> {
-            new SavesManager().purgeWorldFolder(String.valueOf(data[0]));
+            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(String.valueOf(data[0])));
             parentFrame.refreshContent();
         });
 
         replaceWorldWithLatestBackup.setOnAction(e -> {
-            new SavesManager().replaceWorldWithBackup();
+            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup());
             parentFrame.refreshContent();
         });
     }

@@ -12,7 +12,6 @@ public class SavesManagerFrame extends BorderPane {
     private SavesManager savesManager;
     private JFXListView<SavesManagerWorldTile> listViewWorlds;
     private JFXListView<JFXButton> listViewOptions;
-    private Object[][] data;
     private long totalFolderSize;
 
     private JFXButton createBackupButton;
@@ -30,7 +29,7 @@ public class SavesManagerFrame extends BorderPane {
     }
 
     public void refreshContent() {
-        data = savesManager.loadSavesContent();
+        Object[][] data = savesManager.loadSavesContent();
         listViewWorlds.getItems().removeAll(listViewWorlds.getItems());
         for (Object[] item : data) {
             listViewWorlds.getItems().add(new SavesManagerWorldTile(savesManager.getMinecraftSavesFolder() + item[0].toString(), item, this));
@@ -57,12 +56,10 @@ public class SavesManagerFrame extends BorderPane {
     }
 
     private void initListeners() {
-        createBackupButton.setOnAction(e -> {
-            ThreadHandler.initFXThread(() -> {
-                setActionPerformedText(savesManager.createBackup());
-                refreshContent();
-            });
-        });
+        createBackupButton.setOnAction(e -> ThreadHandler.initFXThread(() -> {
+            setActionPerformedText(savesManager.createBackup());
+            refreshContent();
+        }));
 
         refreshContentButton.setOnAction(e -> {
             setActionPerformedText("Refreshed table");
@@ -101,7 +98,6 @@ public class SavesManagerFrame extends BorderPane {
 
     public void setActionPerformedText(String text) {
         actionPerformedLabel.setText(text);
-        //TODO :: make the text dissapear after 3 seconds.
     }
 
 }

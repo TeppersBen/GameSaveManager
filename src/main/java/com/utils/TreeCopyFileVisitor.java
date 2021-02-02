@@ -6,7 +6,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class TreeCopyFileVisitor extends SimpleFileVisitor<Path> {
 
-    private Path source;
+    private final Path source;
     private final Path target;
 
     public TreeCopyFileVisitor(String source, String target) {

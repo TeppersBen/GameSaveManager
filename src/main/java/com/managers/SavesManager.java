@@ -1,7 +1,5 @@
 package com.managers;
 
-import com.frames.SavesManagerFrame;
-import com.frames.SavesManagerWorldTile;
 import com.utils.TreeCopyFileVisitor;
 
 import java.io.File;
@@ -19,24 +17,24 @@ import java.util.stream.Collectors;
 
 public class SavesManager {
 
-    private String minecraftSavesFolder = System.getenv("APPDATA")+"/.minecraft/saves/";
+    private final String minecraftSavesFolder = System.getenv("APPDATA")+"/.minecraft/saves/";
     private List<Path> files;
 
-    private Map<String, String> importantChunksEnd = Map.of(
+    private final Map<String, String> importantChunksEnd = Map.of(
             "r.0.0.mca","End Island SE",
             "r.0.-1.mca","End Island NE",
             "r.-1.0.mca","End Island SW",
             "r.-1.-1.mca","End Island NW",
             "r.-1.-4.mca","Wither Rose farm"
     );
-    private Map<String, String> importantChunksOverworld = Map.of(
+    private final Map<String, String> importantChunksOverworld = Map.of(
             "r.-4.-2.mca","Guardian Farm",
             "r.0.-3.mca","Quarry",
             "r.0.-1.mca","Main base, starter chunk",
             "r.0.0.mca","I am an idiot and part of the creeper farm is in this region [TO_BE_DELETED_SOON]",
             "r.0.-4.mca","Stronghold + Portal to the end."
     );
-    private Map<String, String> importantChunksNether = Map.of(
+    private final Map<String, String> importantChunksNether = Map.of(
             "r.0.-1.mca","Nether entry point + Portal to the stronghold",
             "r.-1.-1.mca","Guardian farm storage room",
             "r.-2.-1.mca","Gold farm above nether roof",
@@ -75,6 +73,7 @@ public class SavesManager {
         }
     }
 
+    @SuppressWarnings("All")
     public String purgeWorldFolder(String fileName) {
         loadSavesContent();
         List<Path> toDelete = files.stream().filter(e -> e.toFile().getName().contains(fileName)).collect(Collectors.toList());
@@ -90,6 +89,7 @@ public class SavesManager {
         return "A total of " + calculateMiB(sum.longValue()) + " MiB was purged!";
     }
 
+    @SuppressWarnings("All")
     public String purgeOldBackups() {
         loadSavesContent();
         List<Path> toDeleted = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
@@ -121,6 +121,7 @@ public class SavesManager {
         return "A total of " + calculateMiB(sum) + " MiB was purged!";
     }
 
+    @SuppressWarnings("All")
     private long purgeSpecificMap(File file, Map<String, String> map) {
         try {
             List<Path> anvils = Files.list(file.toPath()).collect(Collectors.toList());
@@ -144,6 +145,7 @@ public class SavesManager {
         }
     }
 
+    @SuppressWarnings("All")
     public String replaceWorldWithBackup() {
         try {
             Files.walk(new File(minecraftSavesFolder + "/MinecraftJavaSurvival/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);

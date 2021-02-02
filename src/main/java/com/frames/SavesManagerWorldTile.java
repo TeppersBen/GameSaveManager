@@ -19,6 +19,8 @@ public class SavesManagerWorldTile extends BorderPane {
     private final Object[] data;
     private final boolean isPrimaryWorld;
 
+    private SavesManagerFrame parentFrame;
+
     private String worldName;
     private String worldSize;
 
@@ -33,11 +35,25 @@ public class SavesManagerWorldTile extends BorderPane {
         sourcePath = path;
         this.data = data;
         isPrimaryWorld = String.valueOf(data[0]).equalsIgnoreCase("MinecraftJavaSurvival");
+        this.parentFrame = parentFrame;
+
+        initComponents();
+        initListeners();
+        layoutComponents();
+    }
+
+    private void initComponents() {
+        wipeUnnecessaryChunksButton = new JFXButton("Wipe Unnecessary Chunks");
+        deleteBackupButton = new JFXButton("Delete Backup");
+        replaceWorldWithLatestBackup = new JFXButton("Restore World");
+
+        worldName = String.valueOf(data[0]);
+        worldSize = String.valueOf(data[1]);
 
         try {
             FileInputStream inputStream = null;
             try {
-                inputStream = new FileInputStream(path + "/icon.png");
+                inputStream = new FileInputStream(sourcePath + "/icon.png");
                 worldIcon = new Image(inputStream);
                 worldIconView = new ImageView(worldIcon);
             } catch (IOException ex) {
@@ -48,35 +64,31 @@ public class SavesManagerWorldTile extends BorderPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        wipeUnnecessaryChunksButton = new JFXButton("Wipe Unnecessary Chunks");
+    private void initListeners() {
         wipeUnnecessaryChunksButton.setOnAction(e -> {
             new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0]));
             parentFrame.refreshContent();
         });
-        if (!isPrimaryWorld) {
-            deleteBackupButton = new JFXButton("Delete Backup");
-            deleteBackupButton.setOnAction(e -> {
-                new SavesManager().purgeWorldFolder(String.valueOf(data[0]));
-                parentFrame.refreshContent();
-            });
-        } else {
-            replaceWorldWithLatestBackup = new JFXButton("Restore World");
-            replaceWorldWithLatestBackup.setOnAction(e -> {
-                new SavesManager().replaceWorldWithBackup();
-                parentFrame.refreshContent();
-            });
-        }
 
-        worldName = String.valueOf(data[0]);
-        worldSize = String.valueOf(data[1]);
+        deleteBackupButton.setOnAction(e -> {
+            new SavesManager().purgeWorldFolder(String.valueOf(data[0]));
+            parentFrame.refreshContent();
+        });
 
+        replaceWorldWithLatestBackup.setOnAction(e -> {
+            new SavesManager().replaceWorldWithBackup();
+            parentFrame.refreshContent();
+        });
+    }
+
+    private void layoutComponents() {
         BorderPane detailsTile = new BorderPane();
-
         BorderPane detailsTileInformation = new BorderPane();
+
         detailsTileInformation.setLeft(new Label(worldName));
         detailsTileInformation.setRight(new Label(worldSize + " MiB"));
-
         detailsTile.setPadding(new Insets(5));
 
         HBox detailsTileButtonBox = new HBox();

@@ -1,6 +1,10 @@
-package frames;
+package com.frames;
 
-import managers.SavesManager;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.managers.SavesManager;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,8 +12,53 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
-public class SavesManagerFrame extends JPanel {
+public class SavesManagerFrame extends BorderPane {
 
+    private SavesManager savesManager;
+    private JFXListView<SavesManagerWorldTile> listViewWorlds;
+    private JFXListView<JFXButton> listViewOptions;
+    private Object[][] data;
+    private long totalFolderSize;
+
+    public SavesManagerFrame() {
+        listViewWorlds = new JFXListView<>();
+        savesManager = new SavesManager();
+        data = savesManager.loadSavesContent();
+        listViewOptions = new JFXListView<>();
+
+        listViewWorlds.setExpanded(true);
+        listViewWorlds.setDepth(1);
+        listViewWorlds.setVerticalGap(3.0);
+
+        listViewOptions.setExpanded(true);
+        listViewOptions.setDepth(1);
+        listViewOptions.setVerticalGap(3.0);
+
+        for (Object[] item : data) {
+            listViewWorlds.getItems().add(new SavesManagerWorldTile(savesManager.getMinecraftSavesFolder() + item[0].toString(), item));
+        }
+
+        listViewOptions.getItems().addAll(
+                new JFXButton("Refresh Table"),
+                new JFXButton("Create Backup"),
+                new JFXButton("Purge Old Backups")
+        );
+
+        long sum = 0;
+        for (int i = 0; i < data.length; i++) {
+            sum += (long) data[i][1];
+        }
+        totalFolderSize = sum;
+
+        setCenter(listViewWorlds);
+        setRight(listViewOptions);
+        setBottom(new Label("Total size: " + totalFolderSize + " MiB"));
+    }
+
+}
+
+
+/* OLD BUT GOLD
     private JButton createBackupButton;
     private JButton refreshTableButton;
     private JButton wipeOldBackupsButton;
@@ -147,5 +196,5 @@ public class SavesManagerFrame extends JPanel {
                 output.setText("THREAD CRASHED!");
             }
         }).start();
-    }
-}
+    }*/
+

@@ -1,6 +1,6 @@
-package managers;
+package com.managers;
 
-import utils.TreeCopyFileVisitor;
+import com.utils.TreeCopyFileVisitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,4 +148,7 @@ public class SavesManager {
         return (long)((size - (size / 100 * 4.8576)) / 1000000);
     }
 
+    public String getMinecraftSavesFolder() {
+        return minecraftSavesFolder;
+    }
 }

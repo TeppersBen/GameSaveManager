@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.managers.SavesManager;
 import com.utils.ThreadHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
@@ -79,13 +80,8 @@ public class SavesManagerFrame extends BorderPane {
                 purgeOldBackupsButton
         );
 
-        listViewWorlds.setExpanded(true);
-        listViewWorlds.setDepth(1);
-        listViewWorlds.setVerticalGap(3.0);
-
-        listViewOptions.setExpanded(true);
-        listViewOptions.setDepth(1);
-        listViewOptions.setVerticalGap(3.0);
+        setValuesForListViews(listViewWorlds);
+        setValuesForListViews(listViewOptions);
 
         setCenter(listViewWorlds);
         setRight(listViewOptions);
@@ -94,6 +90,13 @@ public class SavesManagerFrame extends BorderPane {
         bottomPane.setLeft(totalFolderSizeLabel);
         bottomPane.setRight(actionPerformedLabel);
         setBottom(bottomPane);
+    }
+
+    private void setValuesForListViews(JFXListView<?> listview) {
+        listview.setExpanded(true);
+        listview.setDepth(1);
+        listview.setVerticalGap(3.0);
+        listview.setPadding(new Insets(10));
     }
 
     public void setActionPerformedText(String text) {

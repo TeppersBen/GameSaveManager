@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MinecraftJavaSurvivalManager.iml" filepath="$PROJECT_DIR$/MinecraftJavaSurvivalManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GameSaveManager.iml" filepath="$PROJECT_DIR$/GameSaveManager.iml" />
     </modules>
   </component>
 </project>

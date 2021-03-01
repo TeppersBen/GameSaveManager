@@ -1,4 +1,4 @@
-package com.frames;
+package com.frames.minecraft;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.control.Tooltip;
@@ -8,8 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class ExtrasFrame extends BorderPane {
-    public ExtrasFrame() {
+public class MinecraftExtrasFrame extends BorderPane {
+    public MinecraftExtrasFrame() {
         JFXButton button = new JFXButton("Open MCA-Selector");
         button.setTooltip(new Tooltip("Might not work, Requires JavaFX 15 located within the Program Files folder under Java."));
         button.setOnAction(e -> {

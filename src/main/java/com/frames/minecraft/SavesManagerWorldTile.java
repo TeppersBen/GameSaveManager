@@ -1,4 +1,4 @@
-package com.frames;
+package com.frames.minecraft;
 
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;

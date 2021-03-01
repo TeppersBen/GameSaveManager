@@ -30,3 +30,7 @@ JFXListView {
 .list-cell:selected {
     -fx-background-color: #996515;
 }
+
+#CoreTab {
+    -fx-background-color: blue;
+}

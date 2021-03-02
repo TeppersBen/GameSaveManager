@@ -12,13 +12,13 @@ import javafx.scene.layout.HBox;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class SavesManagerWorldTile extends BorderPane {
+public class MinecraftSavesManagerWorldTile extends BorderPane {
 
     private final String sourcePath;
     private final Object[] data;
     private final boolean isPrimaryWorld;
 
-    private final SavesManagerFrame parentFrame;
+    private final MinecraftSavesManagerFrame parentFrame;
 
     private String worldName;
     private String worldSize;
@@ -29,7 +29,7 @@ public class SavesManagerWorldTile extends BorderPane {
     private JFXButton deleteBackupButton;
     private JFXButton replaceWorldWithLatestBackup;
 
-    public SavesManagerWorldTile(String path, Object[] data, SavesManagerFrame parentFrame) {
+    public MinecraftSavesManagerWorldTile(String path, Object[] data, MinecraftSavesManagerFrame parentFrame) {
         sourcePath = path;
         this.data = data;
         isPrimaryWorld = String.valueOf(data[0]).equalsIgnoreCase("MinecraftJavaSurvival");

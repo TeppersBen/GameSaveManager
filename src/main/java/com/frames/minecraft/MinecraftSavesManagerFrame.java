@@ -8,10 +8,10 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
-public class SavesManagerFrame extends BorderPane {
+public class MinecraftSavesManagerFrame extends BorderPane {
 
     private SavesManager savesManager;
-    private JFXListView<SavesManagerWorldTile> listViewWorlds;
+    private JFXListView<MinecraftSavesManagerWorldTile> listViewWorlds;
     private JFXListView<JFXButton> listViewOptions;
     private long totalFolderSize;
 
@@ -22,7 +22,7 @@ public class SavesManagerFrame extends BorderPane {
     private Label totalFolderSizeLabel;
     private Label actionPerformedLabel;
 
-    public SavesManagerFrame() {
+    public MinecraftSavesManagerFrame() {
         initComponents();
         refreshContent();
         initListeners();
@@ -33,7 +33,7 @@ public class SavesManagerFrame extends BorderPane {
         Object[][] data = savesManager.loadSavesContent();
         listViewWorlds.getItems().removeAll(listViewWorlds.getItems());
         for (Object[] item : data) {
-            listViewWorlds.getItems().add(new SavesManagerWorldTile(savesManager.getMinecraftSavesFolder() + item[0].toString(), item, this));
+            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(savesManager.getMinecraftSavesFolder() + item[0].toString(), item, this));
         }
 
         long sum = 0;

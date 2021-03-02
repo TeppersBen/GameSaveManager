@@ -4,6 +4,7 @@ import com.frames.minecraft.MinecraftMainFrame;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -16,7 +17,6 @@ public class CoreFrame extends JFXTabPane {
     private final double tabWidth = 90.0;
 
     public CoreFrame() {
-
         setMinWidth(tabWidth);
         setMaxWidth(tabWidth);
         setTabMinHeight(tabWidth);
@@ -24,12 +24,13 @@ public class CoreFrame extends JFXTabPane {
         setRotateGraphic(true);
         setSide(Side.LEFT);
 
-        createCell(new Tab("", new MinecraftMainFrame()), "Minecraft", "/icons/minecraft.jpg");
-        createCell(new Tab("", new Label()), "Sims 4", "/icons/Sims4.png");
-        createCell(new Tab("" ,new Label()), "Valheim", "/icons/Valheim.png");
+        createCell(new MinecraftMainFrame(), "Minecraft", "/icons/minecraft.jpg");
+        createCell(new Label("Coming Soon ..."), "Sims 4", "/icons/Sims4.png");
+        createCell(new Label("Coming Soon ..."), "Valheim", "/icons/Valheim.png");
     }
 
-    private void createCell(Tab tab, String title, String iconPath) {
+    private void createCell(Node node, String title, String iconPath) {
+        Tab tab = new Tab("", node);
         ImageView imageView = new ImageView(new Image(getClass().getResource(iconPath).toString()));
         double imageWidth = 40;
         imageView.setFitHeight(imageWidth);

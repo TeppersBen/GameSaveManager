@@ -19,18 +19,30 @@ Label,JFXButton {
     -fx-text-fill: white;
 }
 
-JFXListView {
+JFXListView, #container {
     -fx-background-color: #313335;
 }
 
-.list-cell {
+.list-cell, #container-tile {
     -fx-background-color: #2b2b2b;
+}
+
+#container {
+    -fx-padding: 10pt;
+}
+
+#container-tile {
+    -fx-padding: 10pt;
+}
+
+#fieldLabel {
+    -fx-font-size: 1.8em;
 }
 
 .list-cell:selected {
     -fx-background-color: #996515;
 }
 
-#CoreTab {
-    -fx-background-color: blue;
+JFXTextField {
+    -fx-text-fill: white;
 }

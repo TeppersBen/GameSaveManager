@@ -77,7 +77,7 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
         });
 
         replaceWorldWithLatestBackup.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup());
+            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(getWorldName()));
             parentFrame.refreshContent();
         });
     }
@@ -103,5 +103,9 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
 
         setLeft(worldIconView);
         setCenter(detailsTile);
+    }
+
+    public String getWorldName() {
+        return worldName;
     }
 }

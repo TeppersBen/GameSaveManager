@@ -8,7 +8,7 @@ public class MinecraftMainFrame extends JFXTabPane {
 
     public MinecraftMainFrame() {
         Tab savesTab = new Tab("Saves Folder Manager", new MinecraftSavesManagerFrame());
-        Tab settingsTab = new Tab("Settings", new Label("Not Implemented Yet!"));
+        Tab settingsTab = new Tab("Settings", new MinecraftSettingsFrame());
         Tab extraTab = new Tab("Extra", new MinecraftExtrasFrame());
 
         getTabs().addAll(savesTab, settingsTab, extraTab);

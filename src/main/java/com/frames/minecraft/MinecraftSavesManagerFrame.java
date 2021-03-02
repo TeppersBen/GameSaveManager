@@ -3,6 +3,7 @@ package com.frames.minecraft;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.managers.SavesManager;
+import com.utils.Settings;
 import com.utils.ThreadHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -30,10 +31,10 @@ public class MinecraftSavesManagerFrame extends BorderPane {
     }
 
     public void refreshContent() {
-        Object[][] data = savesManager.loadSavesContent();
+        Object[][] data = savesManager.loadSavesContent(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER);
         listViewWorlds.getItems().removeAll(listViewWorlds.getItems());
         for (Object[] item : data) {
-            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(savesManager.getMinecraftSavesFolder() + item[0].toString(), item, this));
+            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + item[0].toString(), item, this));
         }
 
         long sum = 0;
@@ -58,7 +59,7 @@ public class MinecraftSavesManagerFrame extends BorderPane {
 
     private void initListeners() {
         createBackupButton.setOnAction(e -> ThreadHandler.initFXThread(() -> {
-            setActionPerformedText(savesManager.createBackup());
+            setActionPerformedText(savesManager.createBackup(listViewWorlds.getSelectionModel().getSelectedItem().getWorldName()));
             refreshContent();
         }));
 

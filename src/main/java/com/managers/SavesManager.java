@@ -1,5 +1,6 @@
 package com.managers;
 
+import com.utils.Settings;
 import com.utils.TreeCopyFileVisitor;
 
 import java.io.File;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class SavesManager {
 
-    private final String minecraftSavesFolder = System.getenv("APPDATA")+"/.minecraft/saves/";
     private List<Path> files;
 
     private final Map<String, String> importantChunksEnd = Map.of(
@@ -41,8 +41,8 @@ public class SavesManager {
             "r.-2.0.mca","Magma farm above nether roof"
     );
 
-    public Object[][] loadSavesContent() {
-        File p = new File(minecraftSavesFolder);
+    public Object[][] loadSavesContent(String path) {
+        File p = new File(path);
         try {
             files = Files.list(p.toPath()).collect(Collectors.toList());
             Object[][] data = new Object[files.size()][2];
@@ -59,13 +59,13 @@ public class SavesManager {
         }
     }
 
-    public String createBackup() {
+    public String createBackup(String folderName) {
         try {
-            String targetLocation = minecraftSavesFolder + "/MinecraftJavaSurvival - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
+            String targetLocation = Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/"+folderName+" - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    minecraftSavesFolder + "/MinecraftJavaSurvival/",
+                    Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ folderName +"/",
                     targetLocation);
-            Files.walkFileTree(Paths.get(minecraftSavesFolder + "/MinecraftJavaSurvival/"), fileVisitor);
+            Files.walkFileTree(Paths.get(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ folderName +"/"), fileVisitor);
             return new File(targetLocation).getName();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -75,7 +75,7 @@ public class SavesManager {
 
     @SuppressWarnings("All")
     public String purgeWorldFolder(String fileName) {
-        loadSavesContent();
+        loadSavesContent(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER);
         List<Path> toDelete = files.stream().filter(e -> e.toFile().getName().contains(fileName)).collect(Collectors.toList());
         AtomicLong sum = new AtomicLong();
         try {
@@ -91,7 +91,7 @@ public class SavesManager {
 
     @SuppressWarnings("All")
     public String purgeOldBackups() {
-        loadSavesContent();
+        loadSavesContent(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER);
         List<Path> toDeleted = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
         if (toDeleted.size()-1 > 0) {
             AtomicLong sum = new AtomicLong();
@@ -111,9 +111,9 @@ public class SavesManager {
     }
 
     public String purgeUnnecessaryChunks(String worldName) {
-        File overworld = new File(minecraftSavesFolder + worldName + "/region/");
-        File nether = new File(minecraftSavesFolder + worldName + "/DIM-1/region/");
-        File end = new File(minecraftSavesFolder + worldName + "/DIM1/region/");
+        File overworld = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/region/");
+        File nether = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/DIM-1/region/");
+        File end = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/DIM1/region/");
         long sum = 0;
         sum += purgeSpecificMap(overworld, importantChunksOverworld);
         sum += purgeSpecificMap(nether, importantChunksNether);
@@ -146,16 +146,16 @@ public class SavesManager {
     }
 
     @SuppressWarnings("All")
-    public String replaceWorldWithBackup() {
+    public String replaceWorldWithBackup(String worldName) {
         try {
-            Files.walk(new File(minecraftSavesFolder + "/MinecraftJavaSurvival/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-            loadSavesContent();
-            List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
+            Files.walk(new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            loadSavesContent(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER);
+            List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
             Path toCopy = availableBackups.get(availableBackups.size()-1);
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    minecraftSavesFolder + "/" + toCopy.toFile().getName(),
-                    minecraftSavesFolder + "/MinecraftJavaSurvival");
-            Files.walkFileTree(Paths.get(minecraftSavesFolder + "/" + toCopy.toFile().getName()), fileVisitor);
+                    Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/" + toCopy.toFile().getName(),
+                    Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/" +worldName);
+            Files.walkFileTree(Paths.get(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/" + toCopy.toFile().getName()), fileVisitor);
             return "Replaced main world with latest backup!";
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -165,9 +165,5 @@ public class SavesManager {
 
     private long calculateMiB(long size) {
         return (long)((size - (size / 100 * 4.8576)) / 1000000);
-    }
-
-    public String getMinecraftSavesFolder() {
-        return minecraftSavesFolder;
     }
 }

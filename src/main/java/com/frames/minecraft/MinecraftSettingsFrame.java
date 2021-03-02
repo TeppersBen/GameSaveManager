@@ -32,12 +32,13 @@ public class MinecraftSettingsFrame extends BorderPane {
         labelBackupFolder.setId("fieldLabel");
         labelSavesFolderPath.setId("fieldLabel");
 
-        fieldSavesFolderPath.setText(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER);
-        fieldBackupFolderPath.setText(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER);
+        fieldSavesFolderPath.setText(Settings.pathToMinecraftSaveFolder);
+        fieldBackupFolderPath.setText(Settings.pathToMinecraftBackupFolder);
     }
 
     private void initListeners() {
-        //TODO :: Create a system where as the user changes the location of saves or backups, the manager knows about it.
+        fieldSavesFolderPath.setOnKeyTyped(e -> Settings.pathToMinecraftSaveFolder = fieldSavesFolderPath.getText());
+        fieldBackupFolderPath.setOnKeyTyped(e -> Settings.pathToMinecraftBackupFolder = fieldBackupFolderPath.getText());
     }
 
     private void layoutComponents() {

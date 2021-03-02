@@ -61,11 +61,11 @@ public class SavesManager {
 
     public String createBackup(String folderName) {
         try {
-            String targetLocation = Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/"+folderName+" - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
+            String targetLocation = Settings.pathToMinecraftBackupFolder + "/"+folderName+" - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ folderName +"/",
+                    Settings.pathToMinecraftSaveFolder + "/"+ folderName +"/",
                     targetLocation);
-            Files.walkFileTree(Paths.get(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ folderName +"/"), fileVisitor);
+            Files.walkFileTree(Paths.get(Settings.pathToMinecraftSaveFolder + "/"+ folderName +"/"), fileVisitor);
             return new File(targetLocation).getName();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -75,7 +75,7 @@ public class SavesManager {
 
     @SuppressWarnings("All")
     public String purgeWorldFolder(String fileName) {
-        loadSavesContent(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER);
+        loadSavesContent(Settings.pathToMinecraftSaveFolder);
         List<Path> toDelete = files.stream().filter(e -> e.toFile().getName().contains(fileName)).collect(Collectors.toList());
         AtomicLong sum = new AtomicLong();
         try {
@@ -91,7 +91,7 @@ public class SavesManager {
 
     @SuppressWarnings("All")
     public String purgeOldBackups() {
-        loadSavesContent(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER);
+        loadSavesContent(Settings.pathToMinecraftBackupFolder);
         List<Path> toDeleted = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
         if (toDeleted.size()-1 > 0) {
             AtomicLong sum = new AtomicLong();
@@ -111,9 +111,9 @@ public class SavesManager {
     }
 
     public String purgeUnnecessaryChunks(String worldName) {
-        File overworld = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/region/");
-        File nether = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/DIM-1/region/");
-        File end = new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + worldName + "/DIM1/region/");
+        File overworld = new File(Settings.pathToMinecraftSaveFolder + worldName + "/region/");
+        File nether = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM-1/region/");
+        File end = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM1/region/");
         long sum = 0;
         sum += purgeSpecificMap(overworld, importantChunksOverworld);
         sum += purgeSpecificMap(nether, importantChunksNether);
@@ -148,14 +148,14 @@ public class SavesManager {
     @SuppressWarnings("All")
     public String replaceWorldWithBackup(String worldName) {
         try {
-            Files.walk(new File(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-            loadSavesContent(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER);
+            Files.walk(new File(Settings.pathToMinecraftSaveFolder + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            loadSavesContent(Settings.pathToMinecraftBackupFolder);
             List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
             Path toCopy = availableBackups.get(availableBackups.size()-1);
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/" + toCopy.toFile().getName(),
-                    Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + "/" +worldName);
-            Files.walkFileTree(Paths.get(Settings.DEFAULT_MINECRAFT_BACKUP_FOLDER + "/" + toCopy.toFile().getName()), fileVisitor);
+                    Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName(),
+                    Settings.pathToMinecraftSaveFolder + "/" +worldName);
+            Files.walkFileTree(Paths.get(Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName()), fileVisitor);
             return "Replaced main world with latest backup!";
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -31,10 +31,10 @@ public class MinecraftSavesManagerFrame extends BorderPane {
     }
 
     public void refreshContent() {
-        Object[][] data = savesManager.loadSavesContent(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER);
+        Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftSaveFolder);
         listViewWorlds.getItems().removeAll(listViewWorlds.getItems());
         for (Object[] item : data) {
-            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(Settings.DEFAULT_MINECRAFT_SAVE_FOLDER + item[0].toString(), item, this));
+            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this));
         }
 
         long sum = 0;

@@ -154,7 +154,7 @@ public class SavesManager {
             Path toCopy = availableBackups.get(availableBackups.size()-1);
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                     Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName(),
-                    Settings.pathToMinecraftSaveFolder + "/" +worldName);
+                    Settings.pathToMinecraftSaveFolder + "/" + worldName);
             Files.walkFileTree(Paths.get(Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName()), fileVisitor);
             return "Replaced main world with latest backup!";
         } catch (IOException ex) {
@@ -164,6 +164,7 @@ public class SavesManager {
     }
 
     private long calculateMiB(long size) {
+        //TODO :: make this formula dynamic. 4.8576 only applies to a curtain size.
         return (long)((size - (size / 100 * 4.8576)) / 1000000);
     }
 }

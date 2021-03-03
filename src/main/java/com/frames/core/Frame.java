@@ -1,4 +1,4 @@
-package com.frames;
+package com.frames.core;
 
 import com.frames.minecraft.MinecraftMainFrame;
 import com.jfoenix.controls.JFXTabPane;
@@ -12,11 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextAlignment;
 
-public class CoreFrame extends JFXTabPane {
+public class Frame extends JFXTabPane {
 
     private final double tabWidth = 90.0;
 
-    public CoreFrame() {
+    public Frame() {
         setMinWidth(tabWidth);
         setMaxWidth(tabWidth);
         setTabMinHeight(tabWidth);

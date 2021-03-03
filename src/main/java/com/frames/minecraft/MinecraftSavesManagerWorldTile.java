@@ -95,9 +95,7 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
             }
         });
 
-        createBackupButton.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName));
-        });
+        createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
     }
 
     private void layoutComponents() {

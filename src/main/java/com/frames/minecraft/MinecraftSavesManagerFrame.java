@@ -1,40 +1,45 @@
 package com.frames.minecraft;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 import com.managers.SavesManager;
 import com.utils.Settings;
-import com.utils.ThreadHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MinecraftSavesManagerFrame extends BorderPane {
 
     private SavesManager savesManager;
-    private JFXListView<MinecraftSavesManagerWorldTile> listViewWorlds;
-    private JFXListView<JFXButton> listViewOptions;
+    private VBox worldsBox;
     private long totalFolderSize;
 
-    private JFXButton createBackupButton;
+    private List<MinecraftSavesManagerWorldTile> worldTileList;
+
     private JFXButton refreshContentButton;
-    private JFXButton purgeOldBackupsButton;
 
     private Label totalFolderSizeLabel;
     private Label actionPerformedLabel;
 
     public MinecraftSavesManagerFrame() {
         initComponents();
-        refreshContent();
         initListeners();
         layoutComponents();
+        refreshContent();
     }
 
     public void refreshContent() {
         Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftSaveFolder);
-        listViewWorlds.getItems().removeAll(listViewWorlds.getItems());
+        worldsBox.getChildren().removeAll(worldTileList);
+        worldTileList = new ArrayList<>();
         for (Object[] item : data) {
-            listViewWorlds.getItems().add(new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this));
+            MinecraftSavesManagerWorldTile tile = new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this, false);
+            worldTileList.add(tile);
+            worldsBox.getChildren().add(tile);
         }
 
         long sum = 0;
@@ -48,60 +53,30 @@ public class MinecraftSavesManagerFrame extends BorderPane {
 
     private void initComponents() {
         savesManager = new SavesManager();
-        listViewOptions = new JFXListView<>();
-        listViewWorlds = new JFXListView<>();
-        createBackupButton = new JFXButton("Create Backup");
-        refreshContentButton = new JFXButton("Refresh Table");
+        worldsBox = new VBox();
         totalFolderSizeLabel = new Label("Total size: " + totalFolderSize + " MiB");
-        purgeOldBackupsButton = new JFXButton("Purge Old Backups");
         actionPerformedLabel = new Label();
+        refreshContentButton = new JFXButton("Refresh");
+        worldTileList = new ArrayList<>();
+
+        setId("container");
     }
 
     private void initListeners() {
-        createBackupButton.setOnAction(e -> ThreadHandler.initFXThread(() -> {
-            setActionPerformedText(savesManager.createBackup(listViewWorlds.getSelectionModel().getSelectedItem().getWorldName()));
-            refreshContent();
-        }));
-
-        refreshContentButton.setOnAction(e -> {
-            setActionPerformedText("Refreshed table");
-            refreshContent();
-        });
-
-        purgeOldBackupsButton.setOnAction(e -> {
-            setActionPerformedText(savesManager.purgeOldBackups());
-            refreshContent();
-        });
+        refreshContentButton.setOnAction(e->refreshContent());
     }
 
     private void layoutComponents() {
-        listViewOptions.getItems().addAll(
-                refreshContentButton,
-                createBackupButton,
-                purgeOldBackupsButton
-        );
-
-        setValuesForListViews(listViewWorlds);
-        setValuesForListViews(listViewOptions);
-
-        setCenter(listViewWorlds);
-        setRight(listViewOptions);
+        setCenter(worldsBox);
 
         BorderPane bottomPane = new BorderPane();
         bottomPane.setLeft(totalFolderSizeLabel);
+        bottomPane.setCenter(refreshContentButton);
         bottomPane.setRight(actionPerformedLabel);
         setBottom(bottomPane);
-    }
-
-    private void setValuesForListViews(JFXListView<?> listview) {
-        listview.setExpanded(true);
-        listview.setDepth(1);
-        listview.setVerticalGap(3.0);
-        listview.setPadding(new Insets(10));
     }
 
     public void setActionPerformedText(String text) {
         actionPerformedLabel.setText(text);
     }
-
 }

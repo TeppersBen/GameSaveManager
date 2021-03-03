@@ -2,6 +2,7 @@ package com.frames.minecraft;
 
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
+import com.utils.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,7 +17,7 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
 
     private final String sourcePath;
     private final Object[] data;
-    private final boolean isPrimaryWorld;
+    private final boolean isBackup;
 
     private final MinecraftSavesManagerFrame parentFrame;
 
@@ -28,11 +29,12 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
     private JFXButton wipeUnnecessaryChunksButton;
     private JFXButton deleteBackupButton;
     private JFXButton replaceWorldWithLatestBackup;
+    private JFXButton checkBackupListButton;
 
-    public MinecraftSavesManagerWorldTile(String path, Object[] data, MinecraftSavesManagerFrame parentFrame) {
+    public MinecraftSavesManagerWorldTile(String path, Object[] data, MinecraftSavesManagerFrame parentFrame, boolean isBackup) {
         sourcePath = path;
         this.data = data;
-        isPrimaryWorld = String.valueOf(data[0]).equalsIgnoreCase("MinecraftJavaSurvival");
+        this.isBackup = isBackup;
         this.parentFrame = parentFrame;
 
         initComponents();
@@ -44,6 +46,7 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
         wipeUnnecessaryChunksButton = new JFXButton("Wipe Unnecessary Chunks");
         deleteBackupButton = new JFXButton("Delete Backup");
         replaceWorldWithLatestBackup = new JFXButton("Restore World");
+        checkBackupListButton = new JFXButton("Check Backup List");
 
         worldName = String.valueOf(data[0]);
         worldSize = String.valueOf(data[1]);
@@ -63,6 +66,8 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setId("container-tile");
     }
 
     private void initListeners() {
@@ -80,6 +85,13 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
             parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(getWorldName()));
             parentFrame.refreshContent();
         });
+
+        checkBackupListButton.setOnAction(e -> {
+            Object[][] data = new SavesManager().loadSavesContent(Settings.pathToMinecraftBackupFolder);
+            for (Object[] item : data) {
+                System.out.println(item[0] + " - " + item[1] + "MiB");
+            }
+        });
     }
 
     private void layoutComponents() {
@@ -92,7 +104,8 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
 
         HBox detailsTileButtonBox = new HBox();
         detailsTileButtonBox.getChildren().add(wipeUnnecessaryChunksButton);
-        if (!isPrimaryWorld) {
+        detailsTileButtonBox.getChildren().add(checkBackupListButton);
+        if (isBackup) {
             detailsTileButtonBox.getChildren().add(deleteBackupButton);
         } else {
             detailsTileButtonBox.getChildren().add(replaceWorldWithLatestBackup);
@@ -103,6 +116,8 @@ public class MinecraftSavesManagerWorldTile extends BorderPane {
 
         setLeft(worldIconView);
         setCenter(detailsTile);
+
+        setMaxHeight(50);
     }
 
     public String getWorldName() {

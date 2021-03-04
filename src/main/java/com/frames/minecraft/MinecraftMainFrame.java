@@ -1,17 +1,12 @@
 package com.frames.minecraft;
 
-import com.jfoenix.controls.JFXTabPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
+import com.frames.core.TabFrame;
 
-public class MinecraftMainFrame extends JFXTabPane {
+public class MinecraftMainFrame extends TabFrame {
+
 
     public MinecraftMainFrame() {
-        Tab savesTab = new Tab("Saves Folder Manager", new MinecraftSavesManagerFrame());
-        Tab settingsTab = new Tab("Settings", new MinecraftSettingsFrame());
-        Tab extraTab = new Tab("Extra", new MinecraftExtrasFrame());
-
-        getTabs().addAll(savesTab, settingsTab, extraTab);
+        super(new MinecraftSaveFolderFrame(), new MinecraftBackupFolderFrame(), new MinecraftSettingsFrame());
+        addTab("Extra", new MinecraftExtrasFrame());
     }
-
 }

@@ -1,9 +1,7 @@
 package com.frames.core;
 
-import com.frames.minecraft.MinecraftSavesManagerWorldTile;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
-import com.utils.Settings;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;

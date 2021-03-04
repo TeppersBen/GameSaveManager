@@ -10,8 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import javax.print.attribute.URISyntax;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GameSaveTile extends BorderPane {
 
@@ -53,20 +57,10 @@ public class GameSaveTile extends BorderPane {
         worldName = String.valueOf(data[0]);
         worldSize = String.valueOf(data[1]);
 
-        try {
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(sourcePath + "/icon.png");
-                Image worldIcon = new Image(inputStream);
-                worldIconView = new ImageView(worldIcon);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } finally {
-                assert inputStream != null;
-                inputStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (new File(sourcePath + "\\icon.png").exists()) {
+            worldIconView = new ImageView(new Image(new File("file:" + sourcePath + "\\icon.png").getPath()));
+        } else {
+            worldIconView = new ImageView(new Image(getClass().getResource("/icons/minecraft/icon.png").toString()));
         }
 
         setId("container-tile");

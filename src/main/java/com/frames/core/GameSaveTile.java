@@ -2,7 +2,7 @@ package com.frames.core;
 
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
-import com.utils.Settings;
+import com.utils.ActionPerformer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,11 +26,11 @@ public class GameSaveTile extends BorderPane {
 
     private ImageView worldIconView;
 
-    private JFXButton wipeUnnecessaryChunksButton;
     private JFXButton deleteBackupButton;
     private JFXButton replaceWorldWithLatestBackup;
-    private JFXButton checkBackupListButton;
     private JFXButton createBackupButton;
+
+    HBox detailsTileButtonBox;
 
     public GameSaveTile(String path, Object[] data, SaveFolderFrame parentFrame, boolean isBackup) {
         sourcePath = path;
@@ -44,11 +44,11 @@ public class GameSaveTile extends BorderPane {
     }
 
     private void initComponents() {
-        wipeUnnecessaryChunksButton = new JFXButton("Wipe Unnecessary Chunks");
         deleteBackupButton = new JFXButton("Delete Backup");
         replaceWorldWithLatestBackup = new JFXButton("Restore World");
-        checkBackupListButton = new JFXButton("Check Backup List");
         createBackupButton = new JFXButton("Create Backup");
+
+        detailsTileButtonBox = new HBox();
 
         worldName = String.valueOf(data[0]);
         worldSize = String.valueOf(data[1]);
@@ -73,11 +73,6 @@ public class GameSaveTile extends BorderPane {
     }
 
     private void initListeners() {
-        wipeUnnecessaryChunksButton.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0])));
-            parentFrame.refreshContent();
-        });
-
         deleteBackupButton.setOnAction(e -> {
             parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(String.valueOf(data[0])));
             parentFrame.refreshContent();
@@ -86,13 +81,6 @@ public class GameSaveTile extends BorderPane {
         replaceWorldWithLatestBackup.setOnAction(e -> {
             parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(getWorldName()));
             parentFrame.refreshContent();
-        });
-
-        checkBackupListButton.setOnAction(e -> {
-            Object[][] data = new SavesManager().loadSavesContent(Settings.pathToMinecraftBackupFolder);
-            for (Object[] item : data) {
-                System.out.println(item[0] + " - " + item[1] + "MiB");
-            }
         });
 
         createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
@@ -106,12 +94,7 @@ public class GameSaveTile extends BorderPane {
         detailsTileInformation.setRight(new Label(worldSize + " MiB"));
         detailsTile.setPadding(new Insets(5));
 
-        HBox detailsTileButtonBox = new HBox();
-        detailsTileButtonBox.getChildren().addAll(
-                wipeUnnecessaryChunksButton,
-                checkBackupListButton,
-                createBackupButton
-        );
+        detailsTileButtonBox.getChildren().add(createBackupButton);
         if (isBackup) {
             detailsTileButtonBox.getChildren().add(deleteBackupButton);
         } else {
@@ -129,6 +112,11 @@ public class GameSaveTile extends BorderPane {
 
     public String getWorldName() {
         return worldName;
+    }
+
+    protected void addButton(JFXButton button, ActionPerformer action) {
+        button.setOnAction(e -> action.execute());
+        detailsTileButtonBox.getChildren().add(button);
     }
 
 }

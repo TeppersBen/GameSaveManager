@@ -11,7 +11,7 @@
 }
 
 .jfx-tab-pane .tab-selected-line {
-    -fx-stroke: #FFD700;
+    -fx-background-color: black;
     -fx-stroke-width: 3pt;
 }
 
@@ -24,6 +24,10 @@ Label,JFXButton {
 }
 
 .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+#indicatorFrame {
     -fx-background-color: transparent;
 }
 

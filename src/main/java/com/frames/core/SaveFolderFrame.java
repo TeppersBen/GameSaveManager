@@ -25,6 +25,7 @@ public abstract class SaveFolderFrame extends BorderPane {
     protected Label totalFolderSizeLabel;
     protected Label actionPerformedLabel;
     protected long totalFolderSize;
+    protected IndicatorFrame indicatorFrame;
 
     public SaveFolderFrame() {
         initComponents();
@@ -63,9 +64,18 @@ public abstract class SaveFolderFrame extends BorderPane {
         actionPerformedLabel = new Label();
         refreshContentButton = new JFXButton("Refresh");
         worldTileList = new ArrayList<>();
+        indicatorFrame = new IndicatorFrame();
 
         setId("container");
         scrollPane.setId("container");
+    }
+
+    protected void activateIndicator() {
+        //TODO :: System that activates the Inidicator - IndicatorFrame
+    }
+
+    protected void deactivateIndicator() {
+        //TODO :: System that deactivates the Inidicator - IndicatorFrame
     }
 
     public void setActionPerformedText(String text) {

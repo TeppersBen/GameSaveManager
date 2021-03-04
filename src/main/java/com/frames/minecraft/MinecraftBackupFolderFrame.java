@@ -9,6 +9,7 @@ public class MinecraftBackupFolderFrame extends BackupFolderFrame {
 
     @Override
     public void refreshContent() {
+        activateIndicator();
         Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftBackupFolder);
         wipeAllSections();
         String previousName = "/";
@@ -28,5 +29,6 @@ public class MinecraftBackupFolderFrame extends BackupFolderFrame {
         totalFolderSize = sum;
 
         totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
+        deactivateIndicator();
     }
 }

@@ -19,11 +19,15 @@ Label,JFXButton {
     -fx-text-fill: white;
 }
 
-JFXListView, #container {
+.viewport, #container {
     -fx-background-color: #313335;
 }
 
-.list-cell, #container-tile {
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.thumb {
     -fx-background-color: #2b2b2b;
 }
 
@@ -32,15 +36,12 @@ JFXListView, #container {
 }
 
 #container-tile {
+    -fx-background-color: #2b2b2b;
     -fx-padding: 10pt;
 }
 
 #fieldLabel {
     -fx-font-size: 1.8em;
-}
-
-.list-cell:selected {
-    -fx-background-color: #996515;
 }
 
 JFXTextField {

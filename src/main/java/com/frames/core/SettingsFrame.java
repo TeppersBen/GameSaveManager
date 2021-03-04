@@ -1,6 +1,7 @@
 package com.frames.core;
 
 import com.jfoenix.controls.JFXTextField;
+import com.utils.ActionPerformer;
 import com.utils.Settings;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -40,10 +41,6 @@ public class SettingsFrame extends BorderPane {
 
     protected void appendSaveFolderFieldAction(ActionPerformer action) {
         fieldSavesFolderPath.setOnKeyTyped(e -> action.execute());
-    }
-
-    protected interface ActionPerformer {
-        void execute();
     }
 
     private void layoutComponents() {

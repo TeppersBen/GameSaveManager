@@ -4,7 +4,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class BackupFolderFrame extends SaveFolderFrame {
@@ -23,6 +25,7 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
     protected void appendBackupTileToSection(GameSaveTile tile) {
         Section section = sections.get(determineSectionName(tile));
         section.getBackupsBox().getChildren().add(tile);
+        section.getTiles().add(tile);
     }
 
     protected String determineSectionName(GameSaveTile tile) {
@@ -33,11 +36,22 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
         );
     }
 
+    protected void wipeAllSections() {
+        if (sections != null && sections.size() > 0) {
+            sections.forEach((k,v) -> {
+                v.wipeBackupsGUI();
+                worldsBox.getChildren().remove(v);
+            });
+        }
+    }
+
     private static class Section extends BorderPane {
         private final VBox backups;
+        private List<GameSaveTile> tiles;
         private final String sectionName;
         public Section(GameSaveTile tile) {
             backups = new VBox();
+            tiles = new ArrayList<>();
             sectionName = tile.getWorldName().substring(
                     0,
                     tile.getWorldName().split("\\(")
@@ -47,6 +61,11 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
             setTop(sectionTitle);
             setCenter(backups);
         }
+        public void wipeBackupsGUI() {
+            backups.getChildren().removeAll(tiles);
+            tiles = new ArrayList<>();
+        }
+        public List<GameSaveTile> getTiles() { return tiles; }
         public VBox getBackupsBox() { return backups; }
         public String getSectionName() { return sectionName; }
     }

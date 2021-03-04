@@ -148,9 +148,12 @@ public class SavesManager {
     @SuppressWarnings("All")
     public String replaceWorldWithBackup(String worldName) {
         try {
-            Files.walk(new File(Settings.pathToMinecraftSaveFolder + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             loadSavesContent(Settings.pathToMinecraftBackupFolder);
             List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
+            if (availableBackups.size() == 0) {
+                return "No backups available for this world!";
+            }
+            Files.walk(new File(Settings.pathToMinecraftSaveFolder + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             Path toCopy = availableBackups.get(availableBackups.size()-1);
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                     Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName(),

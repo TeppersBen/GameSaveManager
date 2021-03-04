@@ -2,9 +2,14 @@ package com.frames.core;
 
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -43,6 +48,11 @@ public abstract class SaveFolderFrame extends BorderPane {
 
     private void initListeners() {
         refreshContentButton.setOnAction(e->refreshContent());
+        scrollPane.viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {
+            Node content = scrollPane.getContent();
+            scrollPane.setFitToWidth(content.prefWidth(-1) < t1.getWidth());
+            scrollPane.setFitToHeight(content.prefHeight(-1) < t1.getHeight());
+        });
     }
 
     private void initComponents() {

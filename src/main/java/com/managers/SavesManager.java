@@ -74,8 +74,8 @@ public class SavesManager {
     }
 
     @SuppressWarnings("All")
-    public String purgeWorldFolder(String fileName) {
-        loadSavesContent(Settings.pathToMinecraftSaveFolder);
+    public String purgeWorldFolder(String directory, String fileName) {
+        loadSavesContent(directory);
         List<Path> toDelete = files.stream().filter(e -> e.toFile().getName().contains(fileName)).collect(Collectors.toList());
         AtomicLong sum = new AtomicLong();
         try {

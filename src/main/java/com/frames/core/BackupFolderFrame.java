@@ -1,7 +1,9 @@
 package com.frames.core;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
         }
     }
 
-    private static class Section extends BorderPane {
+    private static class Section extends TitledPane {
         private final VBox backups;
         private List<GameSaveTile> tiles;
         private final String sectionName;
@@ -58,8 +60,8 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
                             [tile.getWorldName().split("\\(").length-2].length()-3
             );
             Label sectionTitle = new Label(sectionName);
-            setTop(sectionTitle);
-            setCenter(backups);
+            setContent(backups);
+            setText(sectionTitle.getText());
         }
         public void wipeBackupsGUI() {
             backups.getChildren().removeAll(tiles);

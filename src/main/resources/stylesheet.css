@@ -31,6 +31,19 @@ Label,JFXButton {
     -fx-background-color: transparent;
 }
 
+.titled-pane {
+    -fx-text-fill: white;
+}
+
+.titled-pane > .title {
+    -fx-font-size: 1.5em;
+}
+
+.titled-pane > *.content, .titled-pane > .title {
+    -fx-background-color: transparent;
+    -fx-box-border: transparent;
+}
+
 .thumb {
     -fx-background-color: #2b2b2b;
 }

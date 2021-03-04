@@ -24,9 +24,9 @@ public class Frame extends JFXTabPane {
         setRotateGraphic(true);
         setSide(Side.LEFT);
 
-        createCell(new MinecraftMainFrame(), "Minecraft", "/icons/minecraft.jpg");
-        createCell(new Label("Coming Soon ..."), "Sims 4", "/icons/Sims4.png");
-        createCell(new Label("Coming Soon ..."), "Valheim", "/icons/Valheim.png");
+        createCell(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg");
+        createCell(new Label("Coming Soon ..."), "Sims 4", "/icons/gameSections/Sims4.png");
+        createCell(new Label("Coming Soon ..."), "Valheim", "/icons/gameSections/Valheim.png");
     }
 
     private void createCell(Node node, String title, String iconPath) {

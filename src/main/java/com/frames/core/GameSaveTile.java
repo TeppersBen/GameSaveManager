@@ -3,6 +3,7 @@ package com.frames.core;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
 import com.utils.ActionPerformer;
+import com.utils.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -68,7 +69,7 @@ public class GameSaveTile extends BorderPane {
 
     private void initListeners() {
         deleteBackupButton.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(String.valueOf(data[0])));
+            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftBackupFolder, String.valueOf(data[0])));
             parentFrame.refreshContent();
         });
 

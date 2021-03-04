@@ -1,27 +1,26 @@
 package com.frames.minecraft;
 
 import com.frames.core.BackupFolderFrame;
-import com.frames.core.GameSaveTile;
 import com.utils.Settings;
-import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayList;
 
 public class MinecraftBackupFolderFrame extends BackupFolderFrame {
-
-    public MinecraftBackupFolderFrame() {
-
-    }
 
     @Override
     public void refreshContent() {
         Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftBackupFolder);
         worldsBox.getChildren().removeAll(worldTileList);
         worldTileList = new ArrayList<>();
+        String previousName = "/";
         for (Object[] item : data) {
-            MinecraftSavesManagerWorldTile tile = new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftBackupFolder + item[0].toString(), item, this, true);
+            MinecraftGameSaveTile tile = new MinecraftGameSaveTile(Settings.pathToMinecraftBackupFolder + item[0].toString(), item, this, true);
+            if (previousName.equalsIgnoreCase("/") || !previousName.equalsIgnoreCase(determineSectionName(tile))) {
+                addBackupSection(tile);
+                previousName = determineSectionName(tile);
+            }
             worldTileList.add(tile);
-            addBackupSection(tile);
+            appendBackupTileToSection(tile);
         }
 
         long sum = 0;

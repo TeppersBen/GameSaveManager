@@ -17,7 +17,7 @@ public class MinecraftSaveFolderFrame extends SaveFolderFrame {
         worldsBox.getChildren().removeAll(worldTileList);
         worldTileList = new ArrayList<>();
         for (Object[] item : data) {
-            MinecraftSavesManagerWorldTile tile = new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this, false);
+            MinecraftGameSaveTile tile = new MinecraftGameSaveTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this, false);
             worldTileList.add(tile);
             worldsBox.getChildren().add(tile);
         }

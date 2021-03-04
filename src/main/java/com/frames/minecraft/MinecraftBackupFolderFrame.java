@@ -10,8 +10,7 @@ public class MinecraftBackupFolderFrame extends BackupFolderFrame {
     @Override
     public void refreshContent() {
         Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftBackupFolder);
-        worldsBox.getChildren().removeAll(worldTileList);
-        worldTileList = new ArrayList<>();
+        wipeAllSections();
         String previousName = "/";
         for (Object[] item : data) {
             MinecraftGameSaveTile tile = new MinecraftGameSaveTile(Settings.pathToMinecraftBackupFolder + item[0].toString(), item, this, true);
@@ -19,7 +18,6 @@ public class MinecraftBackupFolderFrame extends BackupFolderFrame {
                 addBackupSection(tile);
                 previousName = determineSectionName(tile);
             }
-            worldTileList.add(tile);
             appendBackupTileToSection(tile);
         }
 

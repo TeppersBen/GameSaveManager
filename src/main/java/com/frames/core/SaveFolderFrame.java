@@ -11,15 +11,15 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveFolderFrame extends BorderPane {
+public abstract class SaveFolderFrame extends BorderPane {
 
-    private VBox worldsBox;
-    private List<MinecraftSavesManagerWorldTile> worldTileList;
-    private SavesManager savesManager;
-    private long totalFolderSize;
-    private JFXButton refreshContentButton;
-    private Label totalFolderSizeLabel;
-    private Label actionPerformedLabel;
+    protected VBox worldsBox;
+    protected List<GameSaveTile> worldTileList;
+    protected SavesManager savesManager;
+    protected JFXButton refreshContentButton;
+    protected Label totalFolderSizeLabel;
+    protected Label actionPerformedLabel;
+    protected long totalFolderSize;
 
     public SaveFolderFrame() {
         initComponents();
@@ -30,12 +30,12 @@ public class SaveFolderFrame extends BorderPane {
     }
 
     private void layoutComponents() {
-        setCenter(worldsBox);
-
         BorderPane bottomPane = new BorderPane();
         bottomPane.setLeft(totalFolderSizeLabel);
         bottomPane.setCenter(refreshContentButton);
         bottomPane.setRight(actionPerformedLabel);
+
+        setCenter(worldsBox);
         setBottom(bottomPane);
     }
 
@@ -58,23 +58,6 @@ public class SaveFolderFrame extends BorderPane {
         actionPerformedLabel.setText(text);
     }
 
-    public void refreshContent() {
-        Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftSaveFolder);
-        worldsBox.getChildren().removeAll(worldTileList);
-        worldTileList = new ArrayList<>();
-        for (Object[] item : data) {
-            MinecraftSavesManagerWorldTile tile = new MinecraftSavesManagerWorldTile(Settings.pathToMinecraftSaveFolder + item[0].toString(), item, this, false);
-            worldTileList.add(tile);
-            worldsBox.getChildren().add(tile);
-        }
-
-        long sum = 0;
-        for (Object[] item : data) {
-            sum += (long) item[1];
-        }
-        totalFolderSize = sum;
-
-        totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
-    }
+    protected abstract void refreshContent();
 
 }

@@ -3,6 +3,7 @@ package com.frames.core;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public abstract class SaveFolderFrame extends BorderPane {
 
     protected VBox worldsBox;
+    protected ScrollPane scrollPane;
     protected List<GameSaveTile> worldTileList;
     protected SavesManager savesManager;
     protected JFXButton refreshContentButton;
@@ -33,7 +35,9 @@ public abstract class SaveFolderFrame extends BorderPane {
         bottomPane.setCenter(refreshContentButton);
         bottomPane.setRight(actionPerformedLabel);
 
-        setCenter(worldsBox);
+        scrollPane.setContent(worldsBox);
+
+        setCenter(scrollPane);
         setBottom(bottomPane);
     }
 
@@ -42,6 +46,7 @@ public abstract class SaveFolderFrame extends BorderPane {
     }
 
     private void initComponents() {
+        scrollPane = new ScrollPane();
         savesManager = new SavesManager();
         worldsBox = new VBox();
         totalFolderSizeLabel = new Label("Total size: " + totalFolderSize + " MiB");
@@ -50,6 +55,7 @@ public abstract class SaveFolderFrame extends BorderPane {
         worldTileList = new ArrayList<>();
 
         setId("container");
+        scrollPane.setId("container");
     }
 
     public void setActionPerformedText(String text) {

@@ -12,7 +12,7 @@ public class MinecraftSaveFolderFrame extends SaveFolderFrame {
         refreshContent();
     }
 
-    protected void refreshContent() {
+    public void refreshContent() {
         Object[][] data = savesManager.loadSavesContent(Settings.pathToMinecraftSaveFolder);
         worldsBox.getChildren().removeAll(worldTileList);
         worldTileList = new ArrayList<>();

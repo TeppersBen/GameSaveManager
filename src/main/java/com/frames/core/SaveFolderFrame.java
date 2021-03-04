@@ -58,6 +58,6 @@ public abstract class SaveFolderFrame extends BorderPane {
         actionPerformedLabel.setText(text);
     }
 
-    protected abstract void refreshContent();
+    public abstract void refreshContent();
 
 }

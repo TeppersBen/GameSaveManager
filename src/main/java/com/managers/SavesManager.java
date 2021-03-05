@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class SavesManager {
 
     private List<Path> files;
+    private final String backupPrefix = " - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
 
     private final Map<String, String> importantChunksEnd = Map.of(
             "r.0.0.mca","End Island SE",
@@ -61,7 +62,7 @@ public class SavesManager {
 
     public String createBackup(String folderName) {
         try {
-            String targetLocation = Settings.pathToMinecraftBackupFolder + "/"+folderName+" - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
+            String targetLocation = Settings.pathToMinecraftBackupFolder + "/"+folderName+backupPrefix;
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                     Settings.pathToMinecraftSaveFolder + "/"+ folderName +"/",
                     targetLocation);

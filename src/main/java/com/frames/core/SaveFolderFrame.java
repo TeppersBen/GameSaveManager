@@ -2,15 +2,12 @@ package com.frames.core;
 
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +80,11 @@ public abstract class SaveFolderFrame extends BorderPane {
     }
 
     public abstract void refreshContent();
+
+    protected void setErrLabel(String filePath) {
+        Label errLabel = new Label("Folder is empty!:\n"+filePath);
+        errLabel.setTextAlignment(TextAlignment.CENTER);
+        setCenter(errLabel);
+    }
 
 }

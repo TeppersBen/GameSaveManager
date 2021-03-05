@@ -1,13 +1,11 @@
 package com.frames.core;
 
 import com.jfoenix.controls.JFXTextField;
+import com.managers.PropertiesManager;
 import com.utils.ActionPerformer;
-import com.utils.Settings;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
-import javax.swing.*;
 
 public class SettingsFrame extends BorderPane {
 
@@ -17,9 +15,20 @@ public class SettingsFrame extends BorderPane {
     private Label labelSavesFolderPath;
     private Label labelBackupFolder;
 
-    public SettingsFrame() {
+    private String saveFolderProperty;
+    private String backupFolderProperty;
+
+    public SettingsFrame(String saveFolderProperty, String backupFolderProperty) {
+        this.saveFolderProperty = saveFolderProperty;
+        this.backupFolderProperty = backupFolderProperty;
         initComponents();
         layoutComponents();
+        initListeners();
+    }
+
+    private void initListeners() {
+        fieldBackupFolderPath.focusedProperty().addListener(e -> PropertiesManager.saveProperty(backupFolderProperty, fieldBackupFolderPath.getText()));
+        fieldSavesFolderPath.focusedProperty().addListener(e -> PropertiesManager.saveProperty(saveFolderProperty, fieldSavesFolderPath.getText()));
     }
 
     private void initComponents() {

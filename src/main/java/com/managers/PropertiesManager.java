@@ -13,13 +13,10 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static Properties properties;
-    private static InputStream inputStream;
-    private static OutputStream outputStream;
-    private static String baseLocation;
 
     static {
         try {
-            baseLocation = System.getProperty("user.home") + "\\GameSaveManager";
+            String baseLocation = System.getProperty("user.home") + "\\GameSaveManager";
             if (!new File(baseLocation + "\\config.properties").exists()) {
                 boolean failedToProcess = new File(baseLocation).mkdirs();
                 if (!failedToProcess) {
@@ -33,7 +30,7 @@ public class PropertiesManager {
 
             properties = new Properties();
             String fileName = "config.properties";
-            inputStream = PropertiesManager.class.getClassLoader().getResourceAsStream(fileName);
+            InputStream inputStream = PropertiesManager.class.getClassLoader().getResourceAsStream(fileName);
 
             if (inputStream != null) {
                 properties.load(inputStream);

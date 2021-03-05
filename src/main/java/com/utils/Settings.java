@@ -1,6 +1,8 @@
 package com.utils;
 
+import com.managers.PropertiesManager;
+
 public class Settings {
-    public static String pathToMinecraftSaveFolder = System.getenv("APPDATA")+"\\.minecraft\\saves\\";
-    public static String pathToMinecraftBackupFolder = System.getenv("APPDATA")+"\\.minecraft\\backup\\";
+    public static String pathToMinecraftSaveFolder = PropertiesManager.getProperty("pathToMinecraftSaveFolder");
+    public static String pathToMinecraftBackupFolder = PropertiesManager.getProperty("pathToMinecraftBackupFolder");
 }

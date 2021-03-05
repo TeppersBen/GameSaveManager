@@ -1,10 +1,8 @@
 package com.managers;
 
-import com.utils.Settings;
 import com.utils.TreeCopyFileVisitor;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -13,10 +11,11 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static Properties properties;
+    private static String baseLocation;
 
     static {
         try {
-            String baseLocation = System.getProperty("user.home") + "\\GameSaveManager";
+            baseLocation = System.getProperty("user.home") + "\\GameSaveManager";
             if (!new File(baseLocation + "\\config.properties").exists()) {
                 boolean failedToProcess = new File(baseLocation).mkdirs();
                 if (!failedToProcess) {
@@ -30,7 +29,7 @@ public class PropertiesManager {
 
             properties = new Properties();
             String fileName = "config.properties";
-            InputStream inputStream = PropertiesManager.class.getClassLoader().getResourceAsStream(fileName);
+            InputStream inputStream = new FileInputStream(baseLocation+"\\config.properties");
 
             if (inputStream != null) {
                 properties.load(inputStream);
@@ -53,6 +52,12 @@ public class PropertiesManager {
     }
 
     public static void saveProperty(String key, String value) {
-        //TODO :: Design the save feature.
+        properties.setProperty(key, value);
+
+        try (FileWriter output = new FileWriter(baseLocation+"\\config.properties")) {
+            properties.store(output, "Saving Properties");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

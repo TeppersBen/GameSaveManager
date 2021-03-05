@@ -51,7 +51,12 @@ public class GameSaveTile extends BorderPane {
     private void initComponents() {
         deleteBackupButton = new JFXButton("Delete Backup");
         replaceWorldWithLatestBackup = new JFXButton("Restore World");
-        createBackupButton = new JFXButton("Create Backup");
+
+        if (isBackup) {
+            createBackupButton = new JFXButton("Recover World");
+        } else {
+            createBackupButton = new JFXButton("Create Backup");
+        }
 
         detailsTileButtonBox = new HBox();
 
@@ -78,7 +83,12 @@ public class GameSaveTile extends BorderPane {
             parentFrame.refreshContent();
         });
 
-        createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
+        if (isBackup) {
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText("Function coming soon ...")); //TODO :: Recover world function for the backups list.
+        } else {
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
+        }
+
     }
 
     private void layoutComponents() {

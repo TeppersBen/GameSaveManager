@@ -64,3 +64,22 @@ Label,JFXButton {
 JFXTextField {
     -fx-text-fill: white;
 }
+
+.combo-box,
+.choice-box {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: transparent;
+    -fx-padding: 0 0 3 -8;
+}
+
+.combo-box .list-cell:filled:selected .text,
+.choice-box .list-cell:filled:selected .text {
+    -fx-fill: black;
+}
+
+.combo-box .arrow,
+.choice-box .arrow {
+    -fx-background-color: #4d4d4d;
+}

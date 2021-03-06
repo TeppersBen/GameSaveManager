@@ -176,10 +176,11 @@ public class SavesManager {
         try {
             Files.walk(Path.of(saveWorld.getPath())).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             Files.walkFileTree(Paths.get(backup.getPath()), fileVisitor);
+            return backupName + " has been recovered!";
         } catch (IOException ex) {
             ex.printStackTrace();
+            return "something went wrong!";
         }
-        return "IN DEVELOPMENT";
     }
 
     private long calculateMiB(long size) {

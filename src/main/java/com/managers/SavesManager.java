@@ -146,7 +146,6 @@ public class SavesManager {
         }
     }
 
-    @SuppressWarnings("All")
     public String replaceWorldWithBackup(String worldName) {
         try {
             loadSavesContent(Settings.pathToMinecraftBackupFolder);
@@ -165,6 +164,22 @@ public class SavesManager {
             ex.printStackTrace();
             return ex.getMessage();
         }
+    }
+
+    public String recoverBackup(String backupName) {
+        File backup = new File(Settings.pathToMinecraftBackupFolder + "\\" + backupName);
+        File saveWorld = new File(Settings.pathToMinecraftSaveFolder + "\\" + backupName.substring(0, backupName.length()-24));
+        TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
+                backup.toString(),
+                saveWorld.toString()
+        );
+        try {
+            Files.walk(Path.of(saveWorld.getPath())).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            Files.walkFileTree(Paths.get(backup.getPath()), fileVisitor);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "IN DEVELOPMENT";
     }
 
     private long calculateMiB(long size) {

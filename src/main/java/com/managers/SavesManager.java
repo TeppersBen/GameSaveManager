@@ -146,6 +146,7 @@ public class SavesManager {
         }
     }
 
+    @SuppressWarnings("all")
     public String replaceWorldWithBackup(String worldName) {
         try {
             loadSavesContent(Settings.pathToMinecraftBackupFolder);
@@ -166,6 +167,7 @@ public class SavesManager {
         }
     }
 
+    @SuppressWarnings("all")
     public String recoverBackup(String backupName) {
         File backup = new File(Settings.pathToMinecraftBackupFolder + "\\" + backupName);
         File saveWorld = new File(Settings.pathToMinecraftSaveFolder + "\\" + backupName.substring(0, backupName.length()-24));

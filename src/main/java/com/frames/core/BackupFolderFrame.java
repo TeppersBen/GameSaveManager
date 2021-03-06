@@ -53,6 +53,7 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
         private final String sectionName;
         public Section(GameSaveTile tile) {
             backups = new VBox();
+            backups.setSpacing(5);
             tiles = new ArrayList<>();
             sectionName = tile.getWorldName().substring(
                     0,

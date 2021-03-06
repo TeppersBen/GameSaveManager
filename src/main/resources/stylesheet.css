@@ -57,7 +57,7 @@ Label,JFXButton {
     -fx-padding: 10pt;
 }
 
-#fieldLabel {
+#container-title {
     -fx-font-size: 1.8em;
 }
 

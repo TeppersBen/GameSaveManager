@@ -23,6 +23,7 @@ public abstract class SaveFolderFrame extends BorderPane {
     protected Label actionPerformedLabel;
     protected long totalFolderSize;
     protected IndicatorFrame indicatorFrame;
+    protected BorderPane bottomPane;
 
     public SaveFolderFrame() {
         initComponents();
@@ -33,7 +34,7 @@ public abstract class SaveFolderFrame extends BorderPane {
     }
 
     private void layoutComponents() {
-        BorderPane bottomPane = new BorderPane();
+        bottomPane = new BorderPane();
         bottomPane.setLeft(totalFolderSizeLabel);
         bottomPane.setCenter(refreshContentButton);
         bottomPane.setRight(actionPerformedLabel);
@@ -78,6 +79,18 @@ public abstract class SaveFolderFrame extends BorderPane {
 
     public void setActionPerformedText(String text) {
         actionPerformedLabel.setText(text);
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
+    public VBox getWorldsBox() {
+        return worldsBox;
+    }
+
+    public BorderPane getBottomPane() {
+        return bottomPane;
     }
 
     public abstract void refreshContent();

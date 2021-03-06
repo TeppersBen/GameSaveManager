@@ -1,6 +1,35 @@
 package com.managers;
 
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
 public class IOManager {
+
+    public static void serializeHashMap(String source, Map<String, Map<String, String>> hmap) {
+        try {
+            FileOutputStream fos = new FileOutputStream(source + "\\AnvilMap.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(hmap);
+            oos.close();
+            fos.close();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public static Map<String, Map<String, String>> deSerializeHashMap(String source) {
+        try {
+            FileInputStream fis = new FileInputStream(source + "\\AnvilMap.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            HashMap map = (HashMap) ois.readObject();
+            ois.close();
+            fis.close();
+            return map;
+        } catch(IOException | ClassNotFoundException ex) {
+            return null;
+        }
+    }
 
     public static String convertSystemEnvironmentPathToAbsolutePath(String path) {
         if (path.contains("%")) {
@@ -16,7 +45,7 @@ public class IOManager {
             return false;
         }
         try {
-            double d = Double.parseDouble(strNum);
+            Double.parseDouble(strNum);
         } catch (NumberFormatException nfe) {
             return false;
         }

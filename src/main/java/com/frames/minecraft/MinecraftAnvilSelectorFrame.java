@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTextField;
 import com.managers.IOManager;
 import com.managers.PropertiesManager;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 

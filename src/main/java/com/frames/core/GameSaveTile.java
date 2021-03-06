@@ -30,7 +30,7 @@ public class GameSaveTile extends BorderPane {
     private JFXButton replaceWorldWithLatestBackup;
     private JFXButton createBackupButton;
 
-    HBox detailsTileButtonBox;
+    private HBox detailsTileButtonBox;
 
     public GameSaveTile(String path, Object[] data, SaveFolderFrame parentFrame, boolean isBackup) {
         sourcePath = path;

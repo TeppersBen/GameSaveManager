@@ -43,10 +43,9 @@ public class PropertiesManager {
 
     public static String getProperty(String key) {
         String result = properties.getProperty(key);
+        if (result == null) result = "";
         if (result.contains("%")) {
-            String systemEnv = result.substring(result.indexOf("%")+1, result.indexOf("%", result.indexOf("%")+1));
-            result = result.substring(result.indexOf("%", result.indexOf("%")+1)+1);
-            result = System.getenv(systemEnv) + result;
+            result = IOManager.convertSystemEnvironmentPathToAbsolutePath(result);
         }
         return result;
     }

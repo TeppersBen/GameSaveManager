@@ -40,8 +40,8 @@ public class SettingsFrame extends BorderPane {
 
         setId("container");
         pathsBox.setId("container-tile");
-        labelBackupFolder.setId("fieldLabel");
-        labelSavesFolderPath.setId("fieldLabel");
+        labelBackupFolder.setId("container-title");
+        labelSavesFolderPath.setId("container-title");
     }
 
     protected void appendBackupFolderFieldAction(ActionPerformer action) {

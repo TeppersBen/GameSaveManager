@@ -4,17 +4,13 @@ import com.frames.core.SaveFolderFrame;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.managers.IOManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import javax.imageio.stream.ImageInputStream;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -24,27 +20,43 @@ public class MinecraftChunksFrame extends BorderPane {
 
     private final VBox anvilListBox;
     private Map<String, Map<String, String>> anvilMap;
-    private Map<String, String> anvilMapNether;
-    private Map<String, String> anvilMapOverworld;
-    private Map<String, String> anvilMapEnd;
+    private final Map<String, String> anvilMapNether;
+    private final Map<String, String> anvilMapOverworld;
+    private final Map<String, String> anvilMapEnd;
     private final VBox oldState;
+    private final String path;
 
     public MinecraftChunksFrame(SaveFolderFrame parentFrame, String path) {
         setId("container");
 
+        this.path = path;
         oldState = parentFrame.getWorldsBox();
+
+        anvilListBox = new VBox();
+        anvilListBox.setSpacing(5);
 
         anvilMap = new HashMap<>();
         anvilMapNether = new HashMap<>();
         anvilMapOverworld = new HashMap<>();
         anvilMapEnd = new HashMap<>();
 
+        if (IOManager.deSerializeHashMap(path) != null) {
+            anvilMap = IOManager.deSerializeHashMap(path);
+
+            assert anvilMap != null;
+            anvilMap.forEach((k, v) ->
+                    v.forEach((kk, vv) ->
+                            anvilListBox.getChildren().add(
+                                    new ChunkTile().build(k, kk, vv)
+                            )
+                    )
+            );
+        }
+
+        assert anvilMap != null;
         anvilMap.put("DIM -1", anvilMapNether);
         anvilMap.put("DIM 0", anvilMapOverworld);
         anvilMap.put("DIM 1", anvilMapEnd);
-
-        anvilListBox = new VBox();
-        anvilListBox.setSpacing(5);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setId("container");
@@ -57,15 +69,9 @@ public class MinecraftChunksFrame extends BorderPane {
         setCenter(scrollPane);
 
         JFXButton buttonAppendRow = new JFXButton("+");
-        buttonAppendRow.setOnAction(e -> anvilListBox.getChildren().add(appendRow()));
+        buttonAppendRow.setOnAction(e -> anvilListBox.getChildren().add(new ChunkTile()));
         JFXButton buttonCloseWindow = new JFXButton("<-");
         buttonCloseWindow.setOnAction(e -> {
-            anvilMap.forEach((k,v) -> {
-                System.out.println(k);
-                v.forEach((kk, vv) -> {
-                    System.out.println("\t" + kk + "\t" + vv);
-                });
-            });
             parentFrame.getScrollPane().setContent(oldState);
             parentFrame.getBottomPane().setVisible(true);
         });
@@ -79,35 +85,46 @@ public class MinecraftChunksFrame extends BorderPane {
         setTop(topPane);
     }
 
-    private BorderPane appendRow() {
-        BorderPane innerPane = new BorderPane();
+    private class ChunkTile extends BorderPane {
 
-        JFXTextField fieldDIM = new JFXTextField();
-        fieldDIM.setPromptText("DIM 0");
-        fieldDIM.setTooltip(new Tooltip("DIM -1 = Nether Dimension | DIM 0 = Overworld Dimension | DIM 1 = End Dimension"));
+        private final JFXTextField fieldDIM;
+        private final JFXTextField fieldMCAFile;
+        private final JFXTextField fieldDescription;
 
-        JFXTextField fieldMCAFile = new JFXTextField();
-        fieldMCAFile.setPromptText("r.0.0.mca");
+        public ChunkTile() {
+            BorderPane innerPane = new BorderPane();
 
-        JFXTextField fieldDescription = new JFXTextField();
-        fieldDescription.setPromptText("[OPTIONAL]: Describe what this anvil file represents");
+            fieldDIM = new JFXTextField();
+            fieldDIM.setPromptText("DIM 0");
+            fieldDIM.setTooltip(new Tooltip("DIM -1 = Nether Dimension | DIM 0 = Overworld Dimension | DIM 1 = End Dimension"));
 
-        fieldMCAFile.focusedProperty().addListener(e -> notifyMapping(fieldDIM, fieldMCAFile, fieldDescription));
-        fieldDescription.focusedProperty().addListener(e -> notifyMapping(fieldDIM, fieldMCAFile, fieldDescription));
+            fieldMCAFile = new JFXTextField();
+            fieldMCAFile.setPromptText("r.0.0.mca");
 
-        innerPane.setLeft(fieldMCAFile);
-        innerPane.setCenter(fieldDescription);
+            fieldDescription = new JFXTextField();
+            fieldDescription.setPromptText("[OPTIONAL]: Describe what this anvil file represents");
 
-        BorderPane mainPane = new BorderPane();
-        mainPane.setLeft(fieldDIM);
-        mainPane.setCenter(innerPane);
-        mainPane.setId("container-tile");
+            fieldMCAFile.focusedProperty().addListener(e -> notifyMapping(fieldDIM, fieldMCAFile, fieldDescription));
+            fieldDescription.focusedProperty().addListener(e -> notifyMapping(fieldDIM, fieldMCAFile, fieldDescription));
 
-        JFXButton buttonRemove = new JFXButton("X");
-        buttonRemove.setOnAction(e -> anvilListBox.getChildren().remove(mainPane));
-        innerPane.setRight(buttonRemove);
+            innerPane.setLeft(fieldMCAFile);
+            innerPane.setCenter(fieldDescription);
 
-        return mainPane;
+            setLeft(fieldDIM);
+            setCenter(innerPane);
+            setId("container-tile");
+
+            JFXButton buttonRemove = new JFXButton("X");
+            buttonRemove.setOnAction(e -> anvilListBox.getChildren().remove(this));
+            innerPane.setRight(buttonRemove);
+        }
+
+        public ChunkTile build(String dim, String mca, String desc) {
+            fieldDIM.setText(dim);
+            fieldMCAFile.setText(mca);
+            fieldDescription.setText(desc);
+            return this;
+        }
     }
 
     private void notifyMapping(JFXTextField fieldDimension, JFXTextField fieldMCAFile, JFXTextField fieldDescription) {
@@ -119,6 +136,7 @@ public class MinecraftChunksFrame extends BorderPane {
             } else {
                 anvilMapEnd.put(fieldMCAFile.getText(), fieldDescription.getText());
             }
+            IOManager.serializeHashMap(path, anvilMap);
         }
     }
 

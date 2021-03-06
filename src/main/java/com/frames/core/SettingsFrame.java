@@ -33,6 +33,7 @@ public class SettingsFrame extends BorderPane {
 
     private void initComponents() {
         pathsBox = new VBox();
+        pathsBox.setSpacing(10);
         fieldSavesFolderPath = new JFXTextField();
         fieldBackupFolderPath = new JFXTextField();
         labelSavesFolderPath = new Label("Saves Folder:");

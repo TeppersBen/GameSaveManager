@@ -4,6 +4,7 @@ import com.frames.core.GameSaveTile;
 import com.frames.core.SaveFolderFrame;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
+import com.utils.Settings;
 
 public class MinecraftGameSaveTile extends GameSaveTile {
 
@@ -11,6 +12,10 @@ public class MinecraftGameSaveTile extends GameSaveTile {
         super(path, data, parentFrame, isBackup);
         addButton(new JFXButton("Wipe Unnecessary Chunks"), () -> {
             parentFrame.setActionPerformedText(new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0])));
+            parentFrame.refreshContent();
+        });
+        addButton(new JFXButton("Remove World"), () -> {
+            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftSaveFolder, getWorldName()));
             parentFrame.refreshContent();
         });
     }

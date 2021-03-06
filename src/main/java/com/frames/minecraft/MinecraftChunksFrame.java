@@ -13,16 +13,12 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MinecraftChunksFrame extends BorderPane {
 
     private final VBox anvilListBox;
-    private Map<String, Map<String, String>> anvilMap;
-    private final Map<String, String> anvilMapNether;
-    private final Map<String, String> anvilMapOverworld;
-    private final Map<String, String> anvilMapEnd;
+    private final Map<String, Map<String, String>> anvilMap;
     private final VBox oldState;
     private final String path;
 
@@ -35,28 +31,16 @@ public class MinecraftChunksFrame extends BorderPane {
         anvilListBox = new VBox();
         anvilListBox.setSpacing(5);
 
-        anvilMap = new HashMap<>();
-        anvilMapNether = new HashMap<>();
-        anvilMapOverworld = new HashMap<>();
-        anvilMapEnd = new HashMap<>();
-
-        if (IOManager.deSerializeHashMap(path) != null) {
-            anvilMap = IOManager.deSerializeHashMap(path);
-
-            assert anvilMap != null;
-            anvilMap.forEach((k, v) ->
-                    v.forEach((kk, vv) ->
-                            anvilListBox.getChildren().add(
-                                    new ChunkTile().build(k, kk, vv)
-                            )
-                    )
-            );
-        }
+        anvilMap = IOManager.deSerializeHashMap(path);
 
         assert anvilMap != null;
-        anvilMap.put("DIM -1", anvilMapNether);
-        anvilMap.put("DIM 0", anvilMapOverworld);
-        anvilMap.put("DIM 1", anvilMapEnd);
+        anvilMap.forEach((k, v) ->
+                v.forEach((kk, vv) ->
+                        anvilListBox.getChildren().add(
+                                new ChunkTile().build(k, kk, vv)
+                        )
+                )
+        );
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setId("container");
@@ -115,7 +99,13 @@ public class MinecraftChunksFrame extends BorderPane {
             setId("container-tile");
 
             JFXButton buttonRemove = new JFXButton("X");
-            buttonRemove.setOnAction(e -> anvilListBox.getChildren().remove(this));
+            buttonRemove.setOnAction(e -> {
+                anvilListBox.getChildren().remove(this);
+                if (isValidMCAInput(fieldMCAFile.getText()) && isValidDimension(fieldDIM.getText())) {
+                    anvilMap.get(fieldDIM.getText()).remove(fieldMCAFile.getText());
+                    IOManager.serializeHashMap(path, anvilMap);
+                }
+            });
             innerPane.setRight(buttonRemove);
         }
 
@@ -129,13 +119,7 @@ public class MinecraftChunksFrame extends BorderPane {
 
     private void notifyMapping(JFXTextField fieldDimension, JFXTextField fieldMCAFile, JFXTextField fieldDescription) {
         if (isValidMCAInput(fieldMCAFile.getText()) && isValidDimension(fieldDimension.getText())) {
-            if (fieldDimension.getText().equalsIgnoreCase("DIM -1")) {
-                anvilMapNether.put(fieldMCAFile.getText(), fieldDescription.getText());
-            } else if (fieldDimension.getText().equalsIgnoreCase("DIM 0")) {
-                anvilMapOverworld.put(fieldMCAFile.getText(), fieldDescription.getText());
-            } else {
-                anvilMapEnd.put(fieldMCAFile.getText(), fieldDescription.getText());
-            }
+            anvilMap.get(fieldDimension.getText()).put(fieldMCAFile.getText(), fieldDescription.getText());
             IOManager.serializeHashMap(path, anvilMap);
         }
     }

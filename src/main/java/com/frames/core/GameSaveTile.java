@@ -79,7 +79,7 @@ public class GameSaveTile extends BorderPane {
         });
 
         if (isBackup) {
-            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText("Function coming soon ...")); //TODO :: Recover world function for the backups list.
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().recoverBackup(worldName)));
         } else {
             createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
         }

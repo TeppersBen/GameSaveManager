@@ -18,6 +18,7 @@ public class IOManager {
         }
     }
 
+    @SuppressWarnings("All")
     public static Map<String, Map<String, String>> deSerializeHashMap(String source) {
         try {
             FileInputStream fis = new FileInputStream(source + "\\AnvilMap.ser");
@@ -27,7 +28,7 @@ public class IOManager {
             fis.close();
             return map;
         } catch(IOException | ClassNotFoundException ex) {
-            return null;
+            return new HashMap<>();
         }
     }
 

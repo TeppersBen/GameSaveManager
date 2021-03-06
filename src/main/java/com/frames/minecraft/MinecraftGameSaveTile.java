@@ -14,12 +14,11 @@ public class MinecraftGameSaveTile extends GameSaveTile {
             parentFrame.setActionPerformedText(new SavesManager().purgeUnnecessaryChunks(String.valueOf(data[0])));
             parentFrame.refreshContent();
         });
-        addButton(new JFXButton("Remove World"), () -> {
-            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftSaveFolder, getWorldName()));
-            parentFrame.refreshContent();
-        });
+        if (!isBackup) {
+            addButton(new JFXButton("Remove World"), () -> {
+                parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftSaveFolder, getWorldName()));
+                parentFrame.refreshContent();
+            });
+        }
     }
-
-
-
 }

@@ -57,6 +57,7 @@ public abstract class SaveFolderFrame extends BorderPane {
         scrollPane = new ScrollPane();
         savesManager = new SavesManager();
         worldsBox = new VBox();
+        worldsBox.setSpacing(5);
         totalFolderSizeLabel = new Label("Total size: " + totalFolderSize + " MiB");
         actionPerformedLabel = new Label();
         refreshContentButton = new JFXButton("Refresh");

@@ -21,27 +21,6 @@ public class SavesManager {
     private List<Path> files;
     private final String backupPrefix = " - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
 
-    private final Map<String, String> importantChunksEnd = Map.of(
-            "r.0.0.mca","End Island SE",
-            "r.0.-1.mca","End Island NE",
-            "r.-1.0.mca","End Island SW",
-            "r.-1.-1.mca","End Island NW",
-            "r.-1.-4.mca","Wither Rose farm"
-    );
-    private final Map<String, String> importantChunksOverworld = Map.of(
-            "r.-4.-2.mca","Guardian Farm",
-            "r.0.-3.mca","Quarry",
-            "r.0.-1.mca","Main base, starter chunk",
-            "r.0.0.mca","I am an idiot and part of the creeper farm is in this region [TO_BE_DELETED_SOON]",
-            "r.0.-4.mca","Stronghold + Portal to the end."
-    );
-    private final Map<String, String> importantChunksNether = Map.of(
-            "r.0.-1.mca","Nether entry point + Portal to the stronghold",
-            "r.-1.-1.mca","Guardian farm storage room",
-            "r.-2.-1.mca","Gold farm above nether roof",
-            "r.-2.0.mca","Magma farm above nether roof"
-    );
-
     public Object[][] loadSavesContent(String path) {
         File p = new File(path);
         try {
@@ -116,9 +95,10 @@ public class SavesManager {
         File nether = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM-1/region/");
         File end = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM1/region/");
         long sum = 0;
-        sum += purgeSpecificMap(overworld, importantChunksOverworld);
-        sum += purgeSpecificMap(nether, importantChunksNether);
-        sum += purgeSpecificMap(end, importantChunksEnd);
+        Map<String, Map<String, String>> anvilMap = IOManager.deSerializeHashMap(Settings.pathToMinecraftSaveFolder + worldName);
+        sum += purgeSpecificMap(overworld, anvilMap.get("DIM 0"));
+        sum += purgeSpecificMap(nether, anvilMap.get("DIM -1"));
+        sum += purgeSpecificMap(end, anvilMap.get("DIM 1"));
         return "A total of " + calculateMiB(sum) + " MiB was purged!";
     }
 

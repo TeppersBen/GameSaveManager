@@ -28,7 +28,11 @@ public class IOManager {
             fis.close();
             return map;
         } catch(IOException | ClassNotFoundException ex) {
-            return new HashMap<>();
+            Map map = new HashMap<String, Map<String, String>>();
+            map.put("DIM -1", new HashMap<String, String>());
+            map.put("DIM 0", new HashMap<String, String>());
+            map.put("DIM 1", new HashMap<String, String>());
+            return map;
         }
     }
 

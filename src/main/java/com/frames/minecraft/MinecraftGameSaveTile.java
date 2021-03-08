@@ -4,17 +4,12 @@ import com.frames.core.GameSaveTile;
 import com.frames.core.SaveFolderFrame;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
-import com.utils.Settings;
 
 public class MinecraftGameSaveTile extends GameSaveTile {
 
     public MinecraftGameSaveTile(String path, Object[] data, SaveFolderFrame parentFrame, boolean isBackup) {
         super(path, data, parentFrame, isBackup);
         if (!isBackup) {
-            addButton(new JFXButton("Remove World"), () -> {
-                parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftSaveFolder, getWorldName()));
-                parentFrame.refreshContent();
-            });
             addButton(new JFXButton("Chunk List"), () -> {
                 parentFrame.getScrollPane().setContent(new MinecraftChunksFrame(parentFrame, path));
                 parentFrame.setCenter(parentFrame.getScrollPane());

@@ -64,3 +64,8 @@ Label,JFXButton {
 JFXTextField {
     -fx-text-fill: white;
 }
+
+#remove-icon {
+    -fx-border-color: red;
+    -fx-text-fill:red;
+}

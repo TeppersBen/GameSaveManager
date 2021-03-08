@@ -5,6 +5,8 @@ import com.managers.SavesManager;
 import com.utils.ActionPerformer;
 import com.utils.Settings;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +17,7 @@ import java.io.File;
 
 public class GameSaveTile extends BorderPane {
 
-    private final String sourcePath;
+    private String sourcePath;
     private final Object[] data;
     private final boolean isBackup;
 
@@ -26,7 +28,7 @@ public class GameSaveTile extends BorderPane {
 
     private ImageView worldIconView;
 
-    private JFXButton deleteBackupButton;
+    private JFXButton deleteWorldFile;
     private JFXButton replaceWorldWithLatestBackup;
     private JFXButton createBackupButton;
 
@@ -44,7 +46,8 @@ public class GameSaveTile extends BorderPane {
     }
 
     private void initComponents() {
-        deleteBackupButton = new JFXButton("Delete Backup");
+        deleteWorldFile = new JFXButton("X");
+        deleteWorldFile.setId("remove-icon");
         replaceWorldWithLatestBackup = new JFXButton("Restore World");
 
         if (isBackup) {
@@ -67,10 +70,18 @@ public class GameSaveTile extends BorderPane {
         setId("container-tile");
     }
 
+    @SuppressWarnings("All")
     private void initListeners() {
-        deleteBackupButton.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(Settings.pathToMinecraftBackupFolder, String.valueOf(data[0])));
-            parentFrame.refreshContent();
+        deleteWorldFile.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "", ButtonType.NO, ButtonType.YES);
+            alert.setTitle(worldName + " removal");
+            alert.setContentText("This will clean up " + worldSize + " MiB from your harddrive.");
+            alert.setHeaderText("You are about to remove " + worldName + ", are you sure?");
+            if (alert.showAndWait().get() == ButtonType.YES) {
+                sourcePath = sourcePath.substring(0, sourcePath.length() - String.valueOf(data[0]).length());
+                parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(sourcePath, String.valueOf(data[0])));
+                parentFrame.refreshContent();
+            }
         });
 
         replaceWorldWithLatestBackup.setOnAction(e -> {
@@ -89,23 +100,25 @@ public class GameSaveTile extends BorderPane {
     private void layoutComponents() {
         BorderPane detailsTile = new BorderPane();
         BorderPane detailsTileInformation = new BorderPane();
+        BorderPane detailsTileRemoval = new BorderPane();
 
         detailsTileInformation.setLeft(new Label(worldName));
         detailsTileInformation.setRight(new Label(worldSize + " MiB"));
         detailsTile.setPadding(new Insets(5));
 
         detailsTileButtonBox.getChildren().add(createBackupButton);
-        if (isBackup) {
-            detailsTileButtonBox.getChildren().add(deleteBackupButton);
-        } else {
+        if (!isBackup) {
             detailsTileButtonBox.getChildren().add(replaceWorldWithLatestBackup);
         }
 
         detailsTile.setTop(detailsTileInformation);
         detailsTile.setBottom(detailsTileButtonBox);
 
+        detailsTileRemoval.setTop(deleteWorldFile);
+
         setLeft(worldIconView);
         setCenter(detailsTile);
+        setRight(detailsTileRemoval);
 
         setMaxHeight(50);
     }

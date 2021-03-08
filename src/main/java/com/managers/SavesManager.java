@@ -156,7 +156,9 @@ public class SavesManager {
                 saveWorld.toString()
         );
         try {
-            Files.walk(Path.of(saveWorld.getPath())).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            if (saveWorld.exists()) {
+                Files.walk(Path.of(saveWorld.getPath())).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            }
             Files.walkFileTree(Paths.get(backup.getPath()), fileVisitor);
             return backupName + " has been recovered!";
         } catch (IOException ex) {

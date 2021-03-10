@@ -3,7 +3,6 @@ package com.frames.core;
 import com.jfoenix.controls.JFXButton;
 import com.managers.SavesManager;
 import com.utils.ActionPerformer;
-import com.utils.Settings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

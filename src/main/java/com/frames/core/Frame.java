@@ -25,8 +25,15 @@ public class Frame extends JFXTabPane {
         setSide(Side.LEFT);
 
         createCell(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg");
-        createCell(new Label("Coming Soon ..."), "Sims 4", "/icons/gameSections/Sims4.png");
-        createCell(new Label("Coming Soon ..."), "Valheim", "/icons/gameSections/Valheim.png");
+        createCell("Satisfactory");
+        createCell("Sims 4");
+        createCell("Valheim");
+        createCell("Factorio");
+        createCell("Terraria");
+    }
+
+    private void createCell(String title) {
+        createCell(new Label("Coming Soon ..."), title, "/icons/gameSections/placeholder.png");
     }
 
     private void createCell(Node node, String title, String iconPath) {

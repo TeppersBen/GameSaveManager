@@ -5,6 +5,6 @@ import com.utils.Settings;
 
 public class FactorioBackupFolderFrame extends BackupFolderFrame {
     public FactorioBackupFolderFrame() {
-        super(Settings.pathToFactorioBackupFolder);
+        super(Settings.pathToFactorioSaveFolder, Settings.pathToFactorioBackupFolder);
     }
 }

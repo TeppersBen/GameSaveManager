@@ -91,7 +91,7 @@ public class GameSaveTile extends BorderPane {
         if (isBackup) {
             createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().recoverBackup(worldName)));
         } else {
-            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(worldName)));
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation,worldName)));
         }
 
     }

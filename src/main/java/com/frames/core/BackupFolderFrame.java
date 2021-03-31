@@ -15,23 +15,23 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
 
     protected Map<String, Section> sections;
 
-    public BackupFolderFrame(String folderLocation) {
-        super(folderLocation);
+    public BackupFolderFrame(String saveFolderLocation, String backupFolderLocation) {
+        super(saveFolderLocation, backupFolderLocation);
     }
 
     @Override
     public void refreshContent() {
         activateIndicator();
-        Object[][] data = savesManager.loadSavesContent(folderLocation);
+        Object[][] data = savesManager.loadSavesContent(backupFolderLocation);
         if (data != null) {
             wipeAllSections();
             String previousName = "/";
             for (Object[] item : data) {
                 GameSaveTile tile;
-                if (folderLocation.contains("minecraft")) {
-                    tile = new MinecraftGameSaveTile(folderLocation + item[0].toString(), item, this, true);
+                if (backupFolderLocation.contains("minecraft")) {
+                    tile = new MinecraftGameSaveTile(backupFolderLocation + item[0].toString(), item, this, true);
                 } else {
-                    tile = new GameSaveTile(folderLocation + item[0].toString(), item, this, true);
+                    tile = new GameSaveTile(backupFolderLocation + item[0].toString(), item, this, true);
                 }
                 if (previousName.equalsIgnoreCase("/") || !previousName.equalsIgnoreCase(determineSectionName(tile))) {
                     addBackupSection(tile);

@@ -60,7 +60,6 @@ public abstract class SaveFolderFrame extends BorderPane {
             totalFolderSize = sum;
 
             totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
-            setCenter(worldsBox);
         } else {
             setErrLabel(Settings.pathToMinecraftSaveFolder);
         }

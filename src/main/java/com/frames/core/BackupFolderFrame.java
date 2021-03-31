@@ -48,7 +48,6 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
 
             totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
             deactivateIndicator();
-            setCenter(worldsBox);
         } else {
             setErrLabel(Settings.pathToMinecraftBackupFolder);
         }

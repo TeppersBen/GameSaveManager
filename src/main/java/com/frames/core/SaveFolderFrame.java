@@ -2,8 +2,8 @@ package com.frames.core;
 
 import com.frames.minecraft.MinecraftGameSaveTile;
 import com.jfoenix.controls.JFXButton;
+import com.managers.PropertiesManager;
 import com.managers.SavesManager;
-import com.utils.Settings;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -26,12 +26,12 @@ public abstract class SaveFolderFrame extends BorderPane {
     protected long totalFolderSize;
     protected IndicatorFrame indicatorFrame;
     protected BorderPane bottomPane;
-    protected String saveFolderLocation;
-    protected String backupFolderLocation;
+    protected String saveFolderPropertyName;
+    protected String backupFolderPropertyName;
 
-    public SaveFolderFrame(String saveFolderLocation, String backupFolderLocation) {
-        this.saveFolderLocation = saveFolderLocation;
-        this.backupFolderLocation = backupFolderLocation;
+    public SaveFolderFrame(String saveFolderPropertyName, String backupFolderPropertyName) {
+        this.saveFolderPropertyName = saveFolderPropertyName;
+        this.backupFolderPropertyName = backupFolderPropertyName;
         initComponents();
         initListeners();
         layoutComponents();
@@ -40,16 +40,17 @@ public abstract class SaveFolderFrame extends BorderPane {
     }
 
     public void refreshContent() {
-        Object[][] data = savesManager.loadSavesContent(saveFolderLocation);
+        String location = PropertiesManager.getProperty(saveFolderPropertyName);
+        Object[][] data = savesManager.loadSavesContent(location);
         if (data != null) {
             worldsBox.getChildren().removeAll(worldTileList);
             worldTileList = new ArrayList<>();
             for (Object[] item : data) {
                 GameSaveTile tile;
-                if (saveFolderLocation.contains("minecraft")) {
-                    tile = new MinecraftGameSaveTile(saveFolderLocation + item[0].toString(), item, this, false);
+                if (location.contains("minecraft")) {
+                    tile = new MinecraftGameSaveTile(location + item[0].toString(), item, this, false);
                 } else {
-                    tile = new GameSaveTile(saveFolderLocation + item[0].toString(), item, this, false);
+                    tile = new GameSaveTile(location + item[0].toString(), item, this, false);
                 }
                 worldTileList.add(tile);
                 worldsBox.getChildren().add(tile);
@@ -63,7 +64,7 @@ public abstract class SaveFolderFrame extends BorderPane {
 
             totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
         } else {
-            setErrLabel(Settings.pathToMinecraftSaveFolder);
+            setErrLabel(PropertiesManager.getProperty(saveFolderPropertyName));
         }
     }
 

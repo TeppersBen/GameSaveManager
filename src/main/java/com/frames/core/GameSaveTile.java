@@ -89,7 +89,7 @@ public class GameSaveTile extends BorderPane {
         });
 
         if (isBackup) {
-            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().recoverBackup(worldName)));
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().recoverBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation, worldName)));
         } else {
             createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation,worldName)));
         }

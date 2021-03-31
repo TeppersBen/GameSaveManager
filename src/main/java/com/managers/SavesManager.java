@@ -148,9 +148,9 @@ public class SavesManager {
     }
 
     @SuppressWarnings("all")
-    public String recoverBackup(String backupName) {
-        File backup = new File(Settings.pathToMinecraftBackupFolder + "\\" + backupName);
-        File saveWorld = new File(Settings.pathToMinecraftSaveFolder + "\\" + backupName.substring(0, backupName.length()-24));
+    public String recoverBackup(String savesFolder, String backupFolder, String backupName) {
+        File backup = new File(savesFolder + "\\" + backupName);
+        File saveWorld = new File(backupFolder + "\\" + backupName.substring(0, backupName.length()-24));
         TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                 backup.toString(),
                 saveWorld.toString()

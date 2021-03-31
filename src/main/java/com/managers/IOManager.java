@@ -45,6 +45,14 @@ public class IOManager {
         return path;
     }
 
+    @SuppressWarnings("all")
+    public static void createFolderIfNotExists(String path) {
+        File f = new File(path);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+    }
+
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;

@@ -1,6 +1,7 @@
 package com.frames.core;
 
 import com.jfoenix.controls.JFXButton;
+import com.managers.PropertiesManager;
 import com.managers.SavesManager;
 import com.utils.ActionPerformer;
 import javafx.geometry.Insets;
@@ -84,14 +85,32 @@ public class GameSaveTile extends BorderPane {
         });
 
         replaceWorldWithLatestBackup.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation, getWorldName()));
+            parentFrame.setActionPerformedText(
+                    new SavesManager().replaceWorldWithBackup(
+                            PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
+                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            getWorldName()
+                    )
+            );
             parentFrame.refreshContent();
         });
 
         if (isBackup) {
-            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().recoverBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation, worldName)));
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(
+                    new SavesManager().recoverBackup(
+                            PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
+                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            worldName
+                    )
+            ));
         } else {
-            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(new SavesManager().createBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation,worldName)));
+            createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(
+                    new SavesManager().createBackup(
+                            PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
+                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            worldName
+                    )
+            ));
         }
 
     }

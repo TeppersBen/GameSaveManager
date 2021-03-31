@@ -1,6 +1,5 @@
 package com.managers;
 
-import com.utils.Settings;
 import com.utils.TreeCopyFileVisitor;
 
 import java.io.File;
@@ -71,7 +70,7 @@ public class SavesManager {
 
     @SuppressWarnings("All")
     public String purgeOldBackups() {
-        loadSavesContent(Settings.pathToMinecraftBackupFolder);
+        loadSavesContent(PropertiesManager.getProperty("pathToMinecraftBackupFolder"));
         List<Path> toDeleted = files.stream().filter(e -> e.toFile().getName().contains("MinecraftJavaSurvival - (2")).collect(Collectors.toList());
         if (toDeleted.size()-1 > 0) {
             AtomicLong sum = new AtomicLong();
@@ -91,11 +90,11 @@ public class SavesManager {
     }
 
     public String purgeUnnecessaryChunks(String worldName) {
-        File overworld = new File(Settings.pathToMinecraftSaveFolder + worldName + "/region/");
-        File nether = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM-1/region/");
-        File end = new File(Settings.pathToMinecraftSaveFolder + worldName + "/DIM1/region/");
+        File overworld = new File(PropertiesManager.getProperty("pathToMinecraftSaveFolder") + worldName + "/region/");
+        File nether = new File(PropertiesManager.getProperty("pathToMinecraftSaveFolder") + worldName + "/DIM-1/region/");
+        File end = new File(PropertiesManager.getProperty("pathToMinecraftSaveFolder") + worldName + "/DIM1/region/");
         long sum = 0;
-        Map<String, Map<String, String>> anvilMap = IOManager.deSerializeHashMap(Settings.pathToMinecraftSaveFolder + worldName);
+        Map<String, Map<String, String>> anvilMap = IOManager.deSerializeHashMap(PropertiesManager.getProperty("pathToMinecraftSaveFolder") + worldName);
         sum += purgeSpecificMap(overworld, anvilMap.get("DIM 0"));
         sum += purgeSpecificMap(nether, anvilMap.get("DIM -1"));
         sum += purgeSpecificMap(end, anvilMap.get("DIM 1"));

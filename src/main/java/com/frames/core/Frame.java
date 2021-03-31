@@ -1,5 +1,6 @@
 package com.frames.core;
 
+import com.frames.factorio.FactorioMainFrame;
 import com.frames.minecraft.MinecraftMainFrame;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.geometry.Insets;
@@ -25,10 +26,10 @@ public class Frame extends JFXTabPane {
         setSide(Side.LEFT);
 
         createCell(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg");
+        createCell(new FactorioMainFrame(), "Factorio", "/icons/gameSections/factorio.png");
         createCell("Satisfactory");
         createCell("Sims 4");
         createCell("Valheim");
-        createCell("Factorio");
         createCell("Terraria");
     }
 

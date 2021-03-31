@@ -1,5 +1,7 @@
 package com.frames.core;
 
+import com.frames.minecraft.MinecraftGameSaveTile;
+import com.utils.Settings;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -12,6 +14,45 @@ import java.util.Map;
 public abstract class BackupFolderFrame extends SaveFolderFrame {
 
     protected Map<String, Section> sections;
+
+    public BackupFolderFrame(String folderLocation) {
+        super(folderLocation);
+    }
+
+    @Override
+    public void refreshContent() {
+        activateIndicator();
+        Object[][] data = savesManager.loadSavesContent(folderLocation);
+        if (data != null) {
+            wipeAllSections();
+            String previousName = "/";
+            for (Object[] item : data) {
+                GameSaveTile tile;
+                if (folderLocation.contains("minecraft")) {
+                    tile = new MinecraftGameSaveTile(folderLocation + item[0].toString(), item, this, true);
+                } else {
+                    tile = new GameSaveTile(folderLocation + item[0].toString(), item, this, true);
+                }
+                if (previousName.equalsIgnoreCase("/") || !previousName.equalsIgnoreCase(determineSectionName(tile))) {
+                    addBackupSection(tile);
+                    previousName = determineSectionName(tile);
+                }
+                appendBackupTileToSection(tile);
+            }
+
+            long sum = 0;
+            for (Object[] item : data) {
+                sum += (long) item[1];
+            }
+            totalFolderSize = sum;
+
+            totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
+            deactivateIndicator();
+            setCenter(worldsBox);
+        } else {
+            setErrLabel(Settings.pathToMinecraftBackupFolder);
+        }
+    }
 
     protected void addBackupSection(GameSaveTile tile) {
         Section section = new Section(tile);

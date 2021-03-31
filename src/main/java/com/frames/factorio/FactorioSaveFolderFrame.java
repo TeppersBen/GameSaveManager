@@ -1,10 +1,11 @@
 package com.frames.factorio;
 
 import com.frames.core.SaveFolderFrame;
+import com.utils.Settings;
 
 public class FactorioSaveFolderFrame extends SaveFolderFrame {
-    @Override
-    public void refreshContent() {
 
+    public FactorioSaveFolderFrame() {
+        super(Settings.pathToFactorioSaveFolder);
     }
 }

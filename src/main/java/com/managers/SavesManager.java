@@ -25,7 +25,6 @@ public class SavesManager {
         File p = new File(path);
         try {
             files = Files.list(p.toPath()).collect(Collectors.toList());
-            files.forEach(System.out::println);
             Object[][] data = new Object[files.size()][2];
 
             for (int i = 0; i < files.size(); i++) {

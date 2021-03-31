@@ -84,7 +84,7 @@ public class GameSaveTile extends BorderPane {
         });
 
         replaceWorldWithLatestBackup.setOnAction(e -> {
-            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(getWorldName()));
+            parentFrame.setActionPerformedText(new SavesManager().replaceWorldWithBackup(parentFrame.saveFolderLocation, parentFrame.backupFolderLocation, getWorldName()));
             parentFrame.refreshContent();
         });
 

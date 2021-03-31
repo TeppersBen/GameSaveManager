@@ -39,13 +39,13 @@ public class SavesManager {
         }
     }
 
-    public String createBackup(String folderName) {
+    public String createBackup(String savesPath, String backupPath, String folderName) {
         try {
-            String targetLocation = Settings.pathToMinecraftBackupFolder + "/"+folderName+backupPrefix;
+            String targetLocation = backupPath + "/"+folderName+backupPrefix;
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    Settings.pathToMinecraftSaveFolder + "/"+ folderName +"/",
+                    savesPath + "/"+ folderName +"/",
                     targetLocation);
-            Files.walkFileTree(Paths.get(Settings.pathToMinecraftSaveFolder + "/"+ folderName +"/"), fileVisitor);
+            Files.walkFileTree(Paths.get(savesPath + "/"+ folderName +"/"), fileVisitor);
             return new File(targetLocation).getName();
         } catch (IOException ex) {
             ex.printStackTrace();

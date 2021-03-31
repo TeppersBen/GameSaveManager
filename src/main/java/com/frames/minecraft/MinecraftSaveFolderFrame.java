@@ -6,6 +6,6 @@ import com.utils.Settings;
 public class MinecraftSaveFolderFrame extends SaveFolderFrame {
 
     public MinecraftSaveFolderFrame() {
-        super(Settings.pathToMinecraftSaveFolder);
+        super(Settings.pathToMinecraftSaveFolder, Settings.pathToMinecraftBackupFolder);
     }
 }

@@ -26,10 +26,12 @@ public abstract class SaveFolderFrame extends BorderPane {
     protected long totalFolderSize;
     protected IndicatorFrame indicatorFrame;
     protected BorderPane bottomPane;
-    protected String folderLocation;
+    protected String saveFolderLocation;
+    protected String backupFolderLocation;
 
-    public SaveFolderFrame(String folderLocation) {
-        this.folderLocation = folderLocation;
+    public SaveFolderFrame(String saveFolderLocation, String backupFolderLocation) {
+        this.saveFolderLocation = saveFolderLocation;
+        this.backupFolderLocation = backupFolderLocation;
         initComponents();
         initListeners();
         layoutComponents();
@@ -38,16 +40,16 @@ public abstract class SaveFolderFrame extends BorderPane {
     }
 
     public void refreshContent() {
-        Object[][] data = savesManager.loadSavesContent(folderLocation);
+        Object[][] data = savesManager.loadSavesContent(saveFolderLocation);
         if (data != null) {
             worldsBox.getChildren().removeAll(worldTileList);
             worldTileList = new ArrayList<>();
             for (Object[] item : data) {
                 GameSaveTile tile;
-                if (folderLocation.contains("minecraft")) {
-                    tile = new MinecraftGameSaveTile(folderLocation + item[0].toString(), item, this, false);
+                if (saveFolderLocation.contains("minecraft")) {
+                    tile = new MinecraftGameSaveTile(saveFolderLocation + item[0].toString(), item, this, false);
                 } else {
-                    tile = new GameSaveTile(folderLocation + item[0].toString(), item, this, false);
+                    tile = new GameSaveTile(saveFolderLocation + item[0].toString(), item, this, false);
                 }
                 worldTileList.add(tile);
                 worldsBox.getChildren().add(tile);

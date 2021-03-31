@@ -127,19 +127,19 @@ public class SavesManager {
     }
 
     @SuppressWarnings("all")
-    public String replaceWorldWithBackup(String worldName) {
+    public String replaceWorldWithBackup(String savesFolder, String backupFolder, String worldName) {
         try {
-            loadSavesContent(Settings.pathToMinecraftBackupFolder);
+            loadSavesContent(backupFolder);
             List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
             if (availableBackups.size() == 0) {
                 return "No backups available for this world!";
             }
-            Files.walk(new File(Settings.pathToMinecraftSaveFolder + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            Files.walk(new File(savesFolder + "/"+ worldName +"/").toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             Path toCopy = availableBackups.get(availableBackups.size()-1);
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
-                    Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName(),
-                    Settings.pathToMinecraftSaveFolder + "/" + worldName);
-            Files.walkFileTree(Paths.get(Settings.pathToMinecraftBackupFolder + "/" + toCopy.toFile().getName()), fileVisitor);
+                    backupFolder + "/" + toCopy.toFile().getName(),
+                    savesFolder + "/" + worldName);
+            Files.walkFileTree(Paths.get(backupFolder + "/" + toCopy.toFile().getName()), fileVisitor);
             return "Replaced main world with latest backup!";
         } catch (IOException ex) {
             ex.printStackTrace();

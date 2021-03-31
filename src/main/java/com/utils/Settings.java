@@ -8,4 +8,7 @@ public class Settings {
 
     public static String pathToFactorioSaveFolder = PropertiesManager.getProperty("pathToFactorioSaveFolder");
     public static String pathToFactorioBackupFolder = PropertiesManager.getProperty("pathToFactorioBackupFolder");
+
+    public static String pathToSatisfactorySaveFolder = PropertiesManager.getProperty("pathToSatisfactorySaveFolder");
+    public static String pathToSatisfactoryBackupFolder = PropertiesManager.getProperty("pathToSatisfactoryBackupFolder");
 }

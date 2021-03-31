@@ -26,6 +26,7 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
         Section section = sections.get(determineSectionName(tile));
         section.getBackupsBox().getChildren().add(tile);
         section.getTiles().add(tile);
+        section.updateSectionName();
     }
 
     protected String determineSectionName(GameSaveTile tile) {
@@ -61,6 +62,9 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
             Label sectionTitle = new Label(sectionName);
             setContent(backups);
             setText(sectionTitle.getText());
+        }
+        public void updateSectionName() {
+            setText(sectionName + " (" + getTiles().size() + ")");
         }
         public void wipeBackupsGUI() {
             backups.getChildren().removeAll(tiles);

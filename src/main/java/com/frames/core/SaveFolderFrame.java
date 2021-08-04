@@ -27,11 +27,11 @@ public class SaveFolderFrame extends BorderPane {
     protected IndicatorFrame indicatorFrame;
     protected BorderPane bottomPane;
     protected String saveFolderPropertyName;
-    protected String backupFolderPropertyName;
+    protected String gameName;
 
-    public SaveFolderFrame(String saveFolderPropertyName, String backupFolderPropertyName) {
+    public SaveFolderFrame(String saveFolderPropertyName, String gameName) {
         this.saveFolderPropertyName = saveFolderPropertyName;
-        this.backupFolderPropertyName = backupFolderPropertyName;
+        this.gameName = gameName;
         initComponents();
         initListeners();
         layoutComponents();

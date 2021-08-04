@@ -4,6 +4,6 @@ import com.frames.core.TabFrame;
 
 public class SatisfactoryMainFrame extends TabFrame {
     public SatisfactoryMainFrame() {
-        super("pathToSatisfactorySaveFolder","pathToSatisfactoryBackupFolder");
+        super("pathToSatisfactorySaveFolder","Satisfactory");
     }
 }

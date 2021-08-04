@@ -6,7 +6,7 @@ public class MinecraftMainFrame extends TabFrame {
 
 
     public MinecraftMainFrame() {
-        super("pathToMinecraftSaveFolder","pathToMinecraftBackupFolder");
+        super("pathToMinecraftSaveFolder","Minecraft");
         addTab("Minecraft Anvil Selector", new MinecraftAnvilSelectorFrame());
     }
 }

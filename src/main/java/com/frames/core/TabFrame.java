@@ -6,10 +6,10 @@ import javafx.scene.control.Tab;
 
 public class TabFrame extends JFXTabPane {
 
-    public TabFrame(String saveFolder, String backupFolder) {
-        Tab savesTab = new Tab("Save Folder", new SaveFolderFrame(saveFolder, backupFolder));
-        Tab backupTab = new Tab("Backup Folder", new BackupFolderFrame(saveFolder, backupFolder));
-        Tab settingsTab = new Tab("Settings", new SettingsFrame(saveFolder, backupFolder));
+    public TabFrame(String saveFolder, String gameName) {
+        Tab savesTab = new Tab("Save Folder", new SaveFolderFrame(saveFolder, gameName));
+        Tab backupTab = new Tab("Backup Folder", new BackupFolderFrame(saveFolder, gameName));
+        Tab settingsTab = new Tab("Settings", new SettingsFrame(saveFolder, gameName));
 
         getTabs().addAll(savesTab, backupTab, settingsTab);
     }

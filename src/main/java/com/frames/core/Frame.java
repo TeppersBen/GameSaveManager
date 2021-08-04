@@ -50,7 +50,7 @@ public class Frame extends JFXTabPane {
         }
 
         if (gameTabs.isEmpty() || gameTabs.equalsIgnoreCase("AddGameFrame")) {
-            createCell(new AddGameFrame(this), "Add Game", "/icons/AddGame.png");
+            createCell(new AddGameFrame(this), "Settings", "/icons/gears.png");
         }
     }
 
@@ -66,7 +66,7 @@ public class Frame extends JFXTabPane {
                 getTabs().remove(getTabs().size()-1);
             }
             createCell(node, title, iconPath);
-            createCell(new AddGameFrame(this), "Add Game", "/icons/AddGame.png");
+            createCell(new AddGameFrame(this), "Settings", "/icons/gears.png");
 
             StringBuilder tabs = new StringBuilder();
             for (Tab tab : getTabs()) {
@@ -93,7 +93,7 @@ public class Frame extends JFXTabPane {
     private void createCell(Node node, String title, String iconPath) {
         Tab tab = new Tab("", node);
         ImageView imageView = new ImageView(new Image(getClass().getResource(iconPath).toString()));
-        double imageWidth = 40;
+        double imageWidth = 32;
         imageView.setFitHeight(imageWidth);
         imageView.setFitWidth(imageWidth);
 

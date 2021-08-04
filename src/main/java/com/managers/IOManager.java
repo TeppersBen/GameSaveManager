@@ -3,6 +3,7 @@ package com.managers;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class IOManager {
 
@@ -63,6 +64,34 @@ public class IOManager {
             return false;
         }
         return true;
+    }
+
+    public static StringBuilder readFileContent(String path) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            File myObj = new File(path);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                stringBuilder.append(data + "\n");
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return stringBuilder;
+    }
+
+    public static void writeToFile(String path, String content) {
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write(content);
+            myWriter.close();
+        } catch (IOException e) {
+            System.err.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 }

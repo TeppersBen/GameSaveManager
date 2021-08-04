@@ -11,7 +11,7 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static Properties properties;
-    private static String baseLocation;
+    public static String baseLocation;
 
     static {
         try {

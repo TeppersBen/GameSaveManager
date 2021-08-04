@@ -3,6 +3,7 @@ package com.frames.core;
 import com.frames.minecraft.MinecraftGameSaveTile;
 import com.managers.IOManager;
 import com.managers.PropertiesManager;
+import com.managers.SavesManager;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -13,14 +14,14 @@ public class BackupFolderFrame extends SaveFolderFrame {
 
     protected Map<String, Section> sections;
 
-    public BackupFolderFrame(String saveFolderPropertyName, String backupFolderPropertyName) {
-        super(saveFolderPropertyName, backupFolderPropertyName);
+    public BackupFolderFrame(String saveFolderPropertyName, String gameName) {
+        super(saveFolderPropertyName, gameName);
     }
 
     @Override
     public void refreshContent() {
         activateIndicator();
-        String backupFolderLocation = PropertiesManager.getProperty(backupFolderPropertyName);
+        String backupFolderLocation = SavesManager.backupCoreFolder + gameName;
         if (backupFolderLocation.isEmpty() || backupFolderLocation.isBlank()) {
             deactivateIndicator();
             return;
@@ -53,7 +54,7 @@ public class BackupFolderFrame extends SaveFolderFrame {
             totalFolderSizeLabel.setText("Total size: " + totalFolderSize + " MiB");
             deactivateIndicator();
         } else {
-            setErrLabel(backupFolderPropertyName);
+            setErrLabel(gameName);
         }
     }
 

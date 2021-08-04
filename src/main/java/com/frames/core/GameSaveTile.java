@@ -88,7 +88,7 @@ public class GameSaveTile extends BorderPane {
             parentFrame.setActionPerformedText(
                     new SavesManager().replaceWorldWithBackup(
                             PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
-                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            parentFrame.gameName,
                             getWorldName()
                     )
             );
@@ -99,7 +99,7 @@ public class GameSaveTile extends BorderPane {
             createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(
                     new SavesManager().recoverBackup(
                             PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
-                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            parentFrame.gameName,
                             worldName
                     )
             ));
@@ -107,7 +107,7 @@ public class GameSaveTile extends BorderPane {
             createBackupButton.setOnAction(e -> parentFrame.setActionPerformedText(
                     new SavesManager().createBackup(
                             PropertiesManager.getProperty(parentFrame.saveFolderPropertyName),
-                            PropertiesManager.getProperty(parentFrame.backupFolderPropertyName),
+                            parentFrame.gameName,
                             worldName
                     )
             ));

@@ -4,6 +4,6 @@ import com.frames.core.TabFrame;
 
 public class FactorioMainFrame extends TabFrame {
     public FactorioMainFrame() {
-        super("pathToFactorioSaveFolder", "pathToFactorioBackupFolder");
+        super("pathToFactorioSaveFolder", "Factorio");
     }
 }

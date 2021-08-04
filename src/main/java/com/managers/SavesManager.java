@@ -19,9 +19,10 @@ public class SavesManager {
 
     private List<Path> files;
     private final String backupPrefix = " - (" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH.mm.ss")) + ")";
+    public static String backupCoreFolder = PropertiesManager.baseLocation + "\\backups\\";
 
-    public Object[][] loadSavesContent(String path) {
-        File p = new File(path);
+    public Object[][] loadSavesContent(String location) {
+        File p = new File(location);
         try {
             files = Files.list(p.toPath()).collect(Collectors.toList());
             Object[][] data = new Object[files.size()][2];
@@ -38,9 +39,9 @@ public class SavesManager {
         }
     }
 
-    public String createBackup(String savesPath, String backupPath, String folderName) {
+    public String createBackup(String savesPath, String gameName, String folderName) {
         try {
-            String targetLocation = backupPath + "/"+folderName+backupPrefix;
+            String targetLocation = backupCoreFolder + gameName + "/"+folderName+backupPrefix;
             TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                     savesPath + "/"+ folderName +"/",
                     targetLocation);
@@ -126,9 +127,9 @@ public class SavesManager {
     }
 
     @SuppressWarnings("all")
-    public String replaceWorldWithBackup(String savesFolder, String backupFolder, String worldName) {
+    public String replaceWorldWithBackup(String savesFolder, String gameName, String worldName) {
         try {
-            loadSavesContent(backupFolder);
+            String backupFolder = backupCoreFolder + gameName;
             List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
             if (availableBackups.size() == 0) {
                 return "No backups available for this world!";
@@ -147,9 +148,10 @@ public class SavesManager {
     }
 
     @SuppressWarnings("all")
-    public String recoverBackup(String savesFolder, String backupFolder, String backupName) {
-        File backup = new File(savesFolder + "\\" + backupName);
-        File saveWorld = new File(backupFolder + "\\" + backupName.substring(0, backupName.length()-24));
+    public String recoverBackup(String savesFolder, String gameName, String backupName) {
+        String backupFolder = backupCoreFolder + gameName;
+        File backup = new File(backupFolder + "\\" + backupName);
+        File saveWorld = new File(savesFolder + "\\" + backupName.substring(0, backupName.length()-24));
         TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                 backup.toString(),
                 saveWorld.toString()

@@ -1,9 +1,12 @@
 package com.frames.core;
 
+import com.frames.AddGameFrame;
 import com.frames.factorio.FactorioMainFrame;
 import com.frames.minecraft.MinecraftMainFrame;
+import com.frames.rimworld.RimworldMainFrame;
 import com.frames.satisfactory.SatisfactoryMainFrame;
 import com.jfoenix.controls.JFXTabPane;
+import com.managers.PropertiesManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -13,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextAlignment;
+
+import java.beans.PropertyEditorManager;
 
 public class Frame extends JFXTabPane {
 
@@ -26,16 +31,63 @@ public class Frame extends JFXTabPane {
         setRotateGraphic(true);
         setSide(Side.LEFT);
 
-        createCell(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg");
-        createCell(new FactorioMainFrame(), "Factorio", "/icons/gameSections/factorio.png");
-        createCell(new SatisfactoryMainFrame(), "Satisfactory", "/icons/gameSections/satisfactory.png");
-        createCell("Sims 4");
-        createCell("Valheim");
-        createCell("Terraria");
+        String gameTabs = PropertiesManager.getProperty("gameTabs");
+        for (String tab : gameTabs.split(",")) {
+            switch (tab) {
+                case "MinecraftMainFrame":
+                    addGame(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg");
+                    break;
+                case "FactorioMainFrame":
+                    addGame(new FactorioMainFrame(), "Factorio", "/icons/gameSections/factorio.png");
+                    break;
+                case "SatisfactoryMainFrame":
+                    addGame(new SatisfactoryMainFrame(), "Satisfactory", "/icons/gameSections/satisfactory.png");
+                    break;
+                case "RimworldMainFrame":
+                    addGame(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png");
+                    break;
+            }
+        }
+
+        if (gameTabs.isEmpty() || gameTabs.equalsIgnoreCase("AddGameFrame")) {
+            createCell(new AddGameFrame(this), "Add Game", "/icons/AddGame.png");
+        }
     }
 
-    private void createCell(String title) {
-        createCell(new Label("Coming Soon ..."), title, "/icons/gameSections/placeholder.png");
+    public void addGame(Node node, String title, String iconPath) {
+        boolean alreadyPersists = false;
+        for (Tab tab : getTabs()) {
+            if (node.getClass().getSimpleName().equalsIgnoreCase(tab.getContent().getClass().getSimpleName())) {
+                alreadyPersists = true;
+            }
+        }
+        if (!alreadyPersists) {
+            if (getTabs().size() != 0) {
+                getTabs().remove(getTabs().size()-1);
+            }
+            createCell(node, title, iconPath);
+            createCell(new AddGameFrame(this), "Add Game", "/icons/AddGame.png");
+
+            StringBuilder tabs = new StringBuilder();
+            for (Tab tab : getTabs()) {
+                tabs.append(tab.getContent().getClass().getSimpleName()).append(",");
+            }
+            PropertiesManager.saveProperty("gameTabs", tabs.substring(0, tabs.length()-1));
+        }
+    }
+
+    public void removeGame(Node node) {
+        for (int i = 0; i < getTabs().size(); i++) {
+            if (getTabs().get(i).getContent().getClass().getSimpleName().equalsIgnoreCase(node.getClass().getSimpleName())) {
+                getTabs().remove(i);
+            }
+        }
+
+        StringBuilder tabs = new StringBuilder();
+        for (Tab tab : getTabs()) {
+            tabs.append(tab.getContent().getClass().getSimpleName()).append(",");
+        }
+        PropertiesManager.saveProperty("gameTabs", tabs.substring(0, tabs.length()-1));
     }
 
     private void createCell(Node node, String title, String iconPath) {

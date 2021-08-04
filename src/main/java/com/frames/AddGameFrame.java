@@ -6,6 +6,7 @@ import com.frames.minecraft.MinecraftMainFrame;
 import com.frames.rimworld.RimworldMainFrame;
 import com.frames.satisfactory.SatisfactoryMainFrame;
 import com.jfoenix.controls.JFXButton;
+import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -29,6 +30,7 @@ public class AddGameFrame extends FlowPane {
 
     private Node createGameTile(Node node, String title, String iconPath) {
         FlowPane pane = new FlowPane(Orientation.VERTICAL);
+        pane.setColumnHalignment(HPos.CENTER);
 
         JFXButton buttonAddGame = new JFXButton("Add Game");
         JFXButton buttonRemoveGame = new JFXButton("Remove Game");
@@ -38,13 +40,8 @@ public class AddGameFrame extends FlowPane {
         imageView.setFitHeight(imageWidth);
         imageView.setFitWidth(imageWidth);
 
-        buttonAddGame.setOnAction(e ->{
-            frame.addGame(node, title, iconPath);
-        });
-
-        buttonRemoveGame.setOnAction(e ->{
-            frame.removeGame(node);
-        });
+        buttonAddGame.setOnAction(e -> frame.addGame(node, title, iconPath));
+        buttonRemoveGame.setOnAction(e -> frame.removeGame(node));
 
         pane.getChildren().addAll(
                 imageView,

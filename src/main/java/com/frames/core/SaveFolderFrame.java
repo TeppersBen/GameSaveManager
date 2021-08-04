@@ -14,7 +14,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SaveFolderFrame extends BorderPane {
+public class SaveFolderFrame extends BorderPane {
 
     protected VBox worldsBox;
     protected ScrollPane scrollPane;

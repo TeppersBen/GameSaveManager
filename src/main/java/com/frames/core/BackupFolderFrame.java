@@ -7,12 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public abstract class BackupFolderFrame extends SaveFolderFrame {
+public class BackupFolderFrame extends SaveFolderFrame {
 
     protected Map<String, Section> sections;
 
@@ -24,9 +21,13 @@ public abstract class BackupFolderFrame extends SaveFolderFrame {
     public void refreshContent() {
         activateIndicator();
         String backupFolderLocation = PropertiesManager.getProperty(backupFolderPropertyName);
+        if (backupFolderLocation.isEmpty() || backupFolderLocation.isBlank()) {
+            deactivateIndicator();
+            return;
+        }
         IOManager.createFolderIfNotExists(backupFolderLocation);
         Object[][] data = savesManager.loadSavesContent(backupFolderLocation);
-        if (data != null) {
+        if (Objects.requireNonNull(data).length != 0) {
             wipeAllSections();
             String previousName = "/";
             for (Object[] item : data) {

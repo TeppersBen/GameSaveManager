@@ -158,11 +158,14 @@ public class RimworldSaveManipulator {
         while ((start = saveFileContent.indexOf("<thing Class=\"Plant\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
 
-            if ((seeker = saveFileContent.indexOf("<growth>", start)) != -1) {
-                saveFileContent.replace(seeker,
-                        saveFileContent.indexOf("</growth>", seeker)+"</growth>".length(),
-                        "<growth>1</growth>");
+            if (segment.contains("Corn")) {
+                if ((seeker = saveFileContent.indexOf("<growth>", start)) != -1) {
+                    saveFileContent.replace(seeker,
+                            saveFileContent.indexOf("</growth>", seeker)+"</growth>".length(),
+                            "<growth>1</growth>");
+                }
             }
+
             lastSegmentEnd = start + segment.length();
         }
     }

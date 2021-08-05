@@ -34,6 +34,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         List<ManipulationTile> tiles = new LinkedList<>();
         tiles.add(new ManipulationTile("Repair Broken Electronics", () -> rimworldSaveManipulator.repairBrokenDownDevices()));
         tiles.add(new ManipulationTile("Cure Colonists", () -> rimworldSaveManipulator.pawnsCureAllColonists()));
+        tiles.add(new ManipulationTile("All Pawns 999 Honor", () -> rimworldSaveManipulator.pawnsGiveAllLoyalists999Honor()));
         return tiles;
     }
 

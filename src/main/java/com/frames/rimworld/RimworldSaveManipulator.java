@@ -184,6 +184,35 @@ public class RimworldSaveManipulator {
         }
     }
 
+    /**
+     * Force all colonists to be very happy.
+     */
+    public void forceVeryHappyColonists() {
+        int start;
+        int lastSegmentEnd = 0;
+        String segment;
+        int seeker = 0;
+        int curStart;
+        int curEnd;
+        while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+
+            curEnd = start;
+            while ((seeker = saveFileContent.indexOf("<li Class=\"Need_", curEnd)) != -1) {
+                curStart = saveFileContent.indexOf("<curLevel>", seeker);
+                curEnd = saveFileContent.indexOf("</curLevel>", seeker)+"</curLevel>".length();
+                saveFileContent.replace(
+                        curStart,
+                        curEnd,
+                        "<curLevel>1</curLevel>"
+                );
+                seeker = curEnd;
+                System.out.printf("%s\t%s\n", saveFileContent.indexOf("<curLevel>", seeker), saveFileContent.indexOf("</curLevel>", seeker)+"</curLevel>".length());
+            }
+            lastSegmentEnd = start + segment.length();
+        }
+    }
+
     public String getContent() {
         return saveFileContent.toString();
     }

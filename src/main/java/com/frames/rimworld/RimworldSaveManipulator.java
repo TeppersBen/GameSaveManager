@@ -92,7 +92,8 @@ public class RimworldSaveManipulator {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
             if (segment.contains("<faction>Faction_11</faction>")) {
                 while ((heathTrackerStart = saveFileContent.indexOf("<li Class=\"Hediff_MissingPart\">", start)) != -1
-                || (heathTrackerStart = saveFileContent.indexOf("<li Class=\"Hediff_Injury\">", start)) != -1) {
+                || (heathTrackerStart = saveFileContent.indexOf("<li Class=\"Hediff_Injury\">", start)) != -1
+                || (heathTrackerStart = saveFileContent.indexOf("<li Class=\"HediffWithComps\">", start)) != -1) {
                     saveFileContent.replace(heathTrackerStart, saveFileContent.indexOf("</li>", heathTrackerStart)+"</li>".length(), "");
                 }
             }

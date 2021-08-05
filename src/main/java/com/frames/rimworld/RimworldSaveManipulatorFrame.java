@@ -47,7 +47,6 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         saves.getSelectionModel().selectedItemProperty().addListener(e -> {
             selectedItem = String.valueOf(saves.getSelectionModel().getSelectedItem());
             labelSelectedSave.setText("Selected Save: " + selectedItem);
-            rimworldSaveManipulator.attachFileContent(IOManager.readFileContent(savesLocation + "\\" + selectedItem));
         });
         return saves;
     }
@@ -60,6 +59,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         pane.getChildren().addAll(tiles);
         buttonApplyManipulations.setOnAction(e -> {
             if (!selectedItem.isEmpty()) {
+                rimworldSaveManipulator.attachFileContent(IOManager.readFileContent(savesLocation + "\\" + selectedItem));
                 AtomicBoolean anythingToggled = new AtomicBoolean(false);
                 tiles.stream().filter(b -> b.getToggleButton().isSelected()).forEach(c -> {
                     anythingToggled.set(true);

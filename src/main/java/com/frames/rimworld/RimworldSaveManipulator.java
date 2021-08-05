@@ -123,7 +123,26 @@ public class RimworldSaveManipulator {
                     }
                 }
             }
+            lastSegmentEnd = start + segment.length();
+        }
+    }
 
+    /**
+     *
+     */
+    public void itemMaxOutStackCount() {
+        int start = 0;
+        int lastSegmentEnd = 0;
+        String segment;
+        int seeker = 0;
+        while ((start = saveFileContent.indexOf("<thing Class=\"ThingWithComps\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+
+            if ((seeker = saveFileContent.indexOf("<stackCount>", start)) != -1) {
+                saveFileContent.replace(seeker,
+                        saveFileContent.indexOf("</stackCount>", seeker)+"</stackCount>".length(),
+                        "<stackCount>9999</stackCount>");
+            }
             lastSegmentEnd = start + segment.length();
         }
     }

@@ -128,7 +128,7 @@ public class RimworldSaveManipulator {
     }
 
     /**
-     *
+     * Maxes out all item stacks.
      */
     public void itemMaxOutStackCount() {
         int start = 0;
@@ -142,6 +142,26 @@ public class RimworldSaveManipulator {
                 saveFileContent.replace(seeker,
                         saveFileContent.indexOf("</stackCount>", seeker)+"</stackCount>".length(),
                         "<stackCount>9999</stackCount>");
+            }
+            lastSegmentEnd = start + segment.length();
+        }
+    }
+
+    /**
+     * Fully grows all plants.
+     */
+    public void plantForcedMaxGrowth() {
+        int start = 0;
+        int lastSegmentEnd = 0;
+        String segment;
+        int seeker = 0;
+        while ((start = saveFileContent.indexOf("<thing Class=\"Plant\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+
+            if ((seeker = saveFileContent.indexOf("<growth>", start)) != -1) {
+                saveFileContent.replace(seeker,
+                        saveFileContent.indexOf("</growth>", seeker)+"</growth>".length(),
+                        "<growth>1</growth>");
             }
             lastSegmentEnd = start + segment.length();
         }

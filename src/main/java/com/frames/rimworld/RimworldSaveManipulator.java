@@ -167,6 +167,20 @@ public class RimworldSaveManipulator {
         }
     }
 
+    /**
+     * Cleans the whole map of Filth.
+     */
+    public void cleanWholeArea() {
+        int start = 0;
+        int lastSegmentEnd = 0;
+        String segment;
+        while ((start = saveFileContent.indexOf("<thing Class=\"Filth\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+            lastSegmentEnd = start + segment.length();
+            saveFileContent.replace(start, lastSegmentEnd, "");
+        }
+    }
+
     public String getContent() {
         return saveFileContent.toString();
     }

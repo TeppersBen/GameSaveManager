@@ -38,6 +38,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         tiles.add(new ManipulationTile("Max Out All Item Stacks", () -> rimworldSaveManipulator.itemMaxOutStackCount()));
         tiles.add(new ManipulationTile("Fully Grow All Crops", () -> rimworldSaveManipulator.plantForcedMaxGrowth()));
         tiles.add(new ManipulationTile("Clean Whole Area", () -> rimworldSaveManipulator.cleanWholeArea()));
+        tiles.add(new ManipulationTile("Force Happy Pawns", () -> rimworldSaveManipulator.forceVeryHappyColonists()));
         return tiles;
     }
 

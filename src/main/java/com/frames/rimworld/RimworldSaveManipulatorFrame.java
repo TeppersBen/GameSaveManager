@@ -37,6 +37,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         tiles.add(new ManipulationTile("All Pawns 999 Honor", () -> rimworldSaveManipulator.pawnsGiveAllLoyalists999Honor()));
         tiles.add(new ManipulationTile("Max Out All Item Stacks", () -> rimworldSaveManipulator.itemMaxOutStackCount()));
         tiles.add(new ManipulationTile("Fully Grow All Crops", () -> rimworldSaveManipulator.plantForcedMaxGrowth()));
+        tiles.add(new ManipulationTile("Clean Whole Area", () -> rimworldSaveManipulator.cleanWholeArea()));
         return tiles;
     }
 

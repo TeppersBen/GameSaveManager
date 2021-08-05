@@ -101,6 +101,33 @@ public class RimworldSaveManipulator {
         }
     }
 
+    /**
+     * Give all Loyalists 999 honor.
+     */
+    public void pawnsGiveAllLoyalists999Honor() {
+        int start = 0;
+        int lastSegmentEnd = 0;
+        String segment;
+        int seeker = 0;
+        while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+
+            if ((seeker = saveFileContent.indexOf("<royalty>", start)) != -1) {
+                if ((seeker = saveFileContent.indexOf("<favor>", seeker)) != -1) {
+                    if ((seeker = saveFileContent.indexOf("<values>", seeker)) != -1) {
+                        saveFileContent.replace(
+                                saveFileContent.indexOf("<li>", seeker),
+                                saveFileContent.indexOf("</li>", seeker)+"</li>".length(),
+                                "<li>999</li>"
+                        );
+                    }
+                }
+            }
+
+            lastSegmentEnd = start + segment.length();
+        }
+    }
+
     public String getContent() {
         return saveFileContent.toString();
     }

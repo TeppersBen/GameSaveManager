@@ -30,6 +30,13 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         setCenter(createManipulationsPane());
     }
 
+    public List<ManipulationTile> getManipulatorList() {
+        List<ManipulationTile> tiles = new LinkedList<>();
+        tiles.add(new ManipulationTile("Repair Broken Electronics", () -> rimworldSaveManipulator.repairBrokenDownDevices()));
+        tiles.add(new ManipulationTile("Cure Colonists", () -> rimworldSaveManipulator.pawnsCureAllColonists()));
+        return tiles;
+    }
+
     private ListView<Object> createListView(String savesLocation) {
         ListView<Object> saves = new ListView<>();
         Object[][] data = savesManager.loadSavesContent(savesLocation);
@@ -49,8 +56,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         BorderPane parent = new BorderPane();
         FlowPane pane = new FlowPane();
         JFXButton buttonApplyManipulations = new JFXButton("Apply");
-        List<ManipulationTile> tiles = new LinkedList<>();
-        tiles.add(new ManipulationTile("Repair Broken Electronics", () -> rimworldSaveManipulator.repairBrokenDownDevices()));
+        List<ManipulationTile> tiles = getManipulatorList();
         pane.getChildren().addAll(tiles);
         buttonApplyManipulations.setOnAction(e -> {
             if (!selectedItem.isEmpty()) {
@@ -90,5 +96,4 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
             return title;
         }
     }
-
 }

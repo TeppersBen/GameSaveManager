@@ -8,6 +8,10 @@ public class RimworldSaveManipulator {
         this.saveFileContent = saveFileContent;
     }
 
+    /**
+     * TODO:: NOT FINISHED
+     * Builds all buildings on the map, even frames that are not finished.
+     */
     public void finishBuildings() {
         int start = 0;
         int lastSegmentEnd = 0;
@@ -72,6 +76,27 @@ public class RimworldSaveManipulator {
         while (saveFileContent.indexOf(tagBroken) != -1) {
             int start = saveFileContent.indexOf(tagBroken);
             saveFileContent.replace(start, start+tagBroken.length(), "");
+        }
+    }
+
+    /**
+     * Recovers all colonist pawns.
+     * Cures: Injuries & Missing Parts
+     */
+    public void pawnsCureAllColonists() {
+        int start = 0;
+        int lastSegmentEnd = 0;
+        String segment;
+        int heathTrackerStart = 0;
+        while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {
+            segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+            if (segment.contains("<faction>Faction_11</faction>")) {
+                while ((heathTrackerStart = saveFileContent.indexOf("<li Class=\"Hediff_MissingPart\">", start)) != -1
+                || (heathTrackerStart = saveFileContent.indexOf("<li Class=\"Hediff_Injury\">", start)) != -1) {
+                    saveFileContent.replace(heathTrackerStart, saveFileContent.indexOf("</li>", heathTrackerStart)+"</li>".length(), "");
+                }
+            }
+            lastSegmentEnd = start + segment.length();
         }
     }
 

@@ -1,12 +1,18 @@
 package com.frames.rimworld;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
 import com.managers.IOManager;
 import com.managers.SavesManager;
+import com.utils.ActionPerformer;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RimworldSaveManipulatorFrame extends BorderPane {
 
@@ -33,23 +39,56 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         labelSelectedSave = new Label();
         saves.getSelectionModel().selectedItemProperty().addListener(e -> {
             selectedItem = String.valueOf(saves.getSelectionModel().getSelectedItem());
-            labelSelectedSave.setText(selectedItem);
+            labelSelectedSave.setText("Selected Save: " + selectedItem);
             rimworldSaveManipulator.attachFileContent(IOManager.readFileContent(savesLocation + "\\" + selectedItem));
         });
         return saves;
     }
 
-    private FlowPane createManipulationsPane() {
+    private BorderPane createManipulationsPane() {
+        BorderPane parent = new BorderPane();
         FlowPane pane = new FlowPane();
-        JFXButton buttonRepairBrokenElectronicDevices = new JFXButton("Repair Broken Devices");
-        buttonRepairBrokenElectronicDevices.setOnAction(e -> {
-            rimworldSaveManipulator.repairBrokenDownDevices();
-            IOManager.writeToFile(savesLocation + "\\" + selectedItem, rimworldSaveManipulator.getContent());
+        JFXButton buttonApplyManipulations = new JFXButton("Apply");
+        List<ManipulationTile> tiles = new LinkedList<>();
+        tiles.add(new ManipulationTile("Repair Broken Electronics", () -> rimworldSaveManipulator.repairBrokenDownDevices()));
+        pane.getChildren().addAll(tiles);
+        buttonApplyManipulations.setOnAction(e -> {
+            if (!selectedItem.isEmpty()) {
+                AtomicBoolean anythingToggled = new AtomicBoolean(false);
+                tiles.stream().filter(b -> b.getToggleButton().isSelected()).forEach(c -> {
+                    anythingToggled.set(true);
+                    c.getAction().execute();
+                });
+                if (anythingToggled.get()) {
+                    IOManager.writeToFile(savesLocation + "\\" + selectedItem, rimworldSaveManipulator.getContent());
+                }
+            }
         });
-        pane.getChildren().addAll(
-                buttonRepairBrokenElectronicDevices
-        );
-        return pane;
+        parent.setTop(labelSelectedSave);
+        parent.setCenter(pane);
+        parent.setBottom(buttonApplyManipulations);
+        return parent;
+    }
+
+    private class ManipulationTile extends FlowPane {
+        private JFXToggleButton button;
+        private ActionPerformer action;
+        private String title;
+        public ManipulationTile(String title, ActionPerformer action) {
+            this.title = title;
+            this.action = action;
+            button = new JFXToggleButton();
+            getChildren().addAll(new Label(title), button);
+        }
+        public JFXToggleButton getToggleButton() {
+            return button;
+        }
+        public ActionPerformer getAction() {
+            return action;
+        }
+        public String getButtonTitle() {
+            return title;
+        }
     }
 
 }

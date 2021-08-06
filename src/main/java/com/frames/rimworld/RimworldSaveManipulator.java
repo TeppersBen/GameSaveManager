@@ -17,13 +17,9 @@ public class RimworldSaveManipulator {
         int lastSegmentEnd = 0;
         int oldSegmentLength = 0;
         String segment;
-        int entitiesFound = 0;
-        int modifications = 0;
         while ((start = saveFileContent.indexOf("<thing Class=\"Blueprint_Build\">", lastSegmentEnd)) != -1 || (start = saveFileContent.indexOf("<thing Class=\"Frame\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
             oldSegmentLength = segment.length();
-
-            entitiesFound++;
 
             if (segment.contains("Frame_Battery") || segment.contains("Blueprint_Battery")) {
                 segment = segment.replace("\"Frame\"", "\"Building_Battery\"");
@@ -42,8 +38,6 @@ public class RimworldSaveManipulator {
                     int startResourceContainer = segment.indexOf("<resourceContainer");
                     segment = segment.substring(0, startResourceContainer);
                 }
-
-                modifications++;
             }
 
         /*else if (segment.contains("Blueprint_Turret_MiniTurret")) { TODO :: BROKEN, Turret spawns without head.
@@ -58,7 +52,6 @@ public class RimworldSaveManipulator {
             lastSegmentEnd = start + segment.length();
             saveFileContent.replace(start, start+oldSegmentLength, segment);
         }
-        System.out.printf("Entities Found: %s\nEntities Modified: %s\n", entitiesFound, modifications);
     }
 
     /**
@@ -174,11 +167,13 @@ public class RimworldSaveManipulator {
      * Cleans the whole map of Filth.
      */
     public void cleanWholeArea() {
-        int start = 0;
+        int start;
+        int oldStart = 0;
         int lastSegmentEnd = 0;
         String segment;
-        while ((start = saveFileContent.indexOf("<thing Class=\"Filth\">", lastSegmentEnd)) != -1) {
+        while ((start = saveFileContent.indexOf("<thing Class=\"Filth\">", oldStart)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
+            oldStart = start;
             lastSegmentEnd = start + segment.length();
             saveFileContent.replace(start, lastSegmentEnd, "");
         }
@@ -186,6 +181,7 @@ public class RimworldSaveManipulator {
 
     /**
      * Force all colonists to be very happy.
+     * TODO :: tends to loop several times before wrapping up.
      */
     public void forceVeryHappyColonists() {
         int start;

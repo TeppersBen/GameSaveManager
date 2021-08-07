@@ -69,3 +69,23 @@ JFXTextField {
     -fx-border-color: red;
     -fx-text-fill:red;
 }
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #5f5f61;
+    -fx-text-fill: white;
+}
+
+.list-cell:odd {
+    -fx-background-color: #3b3f42;
+    -fx-text-fill: white;
+}
+
+.list-cell:even {
+    -fx-background-color: #323335;
+    -fx-text-fill: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #5f5f61;
+    -fx-text-fill: white;
+}

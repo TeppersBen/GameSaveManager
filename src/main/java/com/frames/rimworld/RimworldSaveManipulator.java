@@ -203,7 +203,7 @@ public class RimworldSaveManipulator {
                         "<curLevel>1</curLevel>"
                 );
                 seeker = curEnd;
-                System.out.printf("%s\t%s\n", saveFileContent.indexOf("<curLevel>", seeker), saveFileContent.indexOf("</curLevel>", seeker)+"</curLevel>".length());
+                System.out.printf("%s\t%s\t%s\n", seeker, saveFileContent.indexOf("<curLevel>", seeker), saveFileContent.indexOf("</curLevel>", seeker)+"</curLevel>".length());
             }
             lastSegmentEnd = start + segment.length();
         }

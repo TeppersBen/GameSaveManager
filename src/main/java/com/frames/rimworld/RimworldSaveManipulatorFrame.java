@@ -13,33 +13,42 @@ import javafx.scene.layout.FlowPane;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RimworldSaveManipulatorFrame extends BorderPane {
 
-    private SavesManager savesManager;
+    private final SavesManager savesManager;
     private Label labelSelectedSave;
-    private RimworldSaveManipulator rimworldSaveManipulator;
-    private String savesLocation;
+    private final RimworldSaveManipulator rimworldSaveManipulator;
+    private final String savesLocation;
     private String selectedItem;
 
     public RimworldSaveManipulatorFrame(String savesLocation) {
         this.savesLocation = savesLocation;
         savesManager = new SavesManager();
         rimworldSaveManipulator = new RimworldSaveManipulator();
-        setLeft(createListView(savesLocation));
-        setCenter(createManipulationsPane());
+        ListView<Object> validSaves = createListView(savesLocation);
+        BorderPane manipulations = createManipulationsPane();
+        setLeft(validSaves);
+        setCenter(manipulations);
+
+        setId("container");
+        manipulations.setId("container-tile");
+        validSaves.setId("container-tile");
+        labelSelectedSave.setId("container-title");
     }
 
     public List<ManipulationTile> getManipulatorList() {
         List<ManipulationTile> tiles = new LinkedList<>();
-        tiles.add(new ManipulationTile("Finish All Buildings", () -> rimworldSaveManipulator.finishBuildings()));
-        tiles.add(new ManipulationTile("Repair Broken Electronics", () -> rimworldSaveManipulator.repairBrokenDownDevices()));
-        tiles.add(new ManipulationTile("Cure Colonists", () -> rimworldSaveManipulator.pawnsCureAllColonists()));
-        tiles.add(new ManipulationTile("All Pawns 999 Honor", () -> rimworldSaveManipulator.pawnsGiveAllLoyalists999Honor()));
-        tiles.add(new ManipulationTile("Max Out All Item Stacks", () -> rimworldSaveManipulator.itemMaxOutStackCount()));
-        tiles.add(new ManipulationTile("Fully Grow All Crops", () -> rimworldSaveManipulator.plantForcedMaxGrowth()));
-        tiles.add(new ManipulationTile("Clean Whole Area", () -> rimworldSaveManipulator.cleanWholeArea()));
-        tiles.add(new ManipulationTile("Force Happy Pawns", () -> rimworldSaveManipulator.forceVeryHappyColonists()));
+        tiles.add(new ManipulationTile("Finish All Buildings", rimworldSaveManipulator::finishBuildings));
+        tiles.add(new ManipulationTile("Repair Broken Electronics", rimworldSaveManipulator::repairBrokenDownDevices));
+        tiles.add(new ManipulationTile("Cure Colonists", rimworldSaveManipulator::pawnsCureAllColonists));
+        tiles.add(new ManipulationTile("All Pawns 999 Honor", rimworldSaveManipulator::pawnsGiveAllLoyalists999Honor));
+        tiles.add(new ManipulationTile("Max Out All Item Stacks", rimworldSaveManipulator::itemMaxOutStackCount));
+        tiles.add(new ManipulationTile("Fully Grow All Crops", rimworldSaveManipulator::plantForcedMaxGrowth));
+        tiles.add(new ManipulationTile("Clean Whole Area", rimworldSaveManipulator::cleanWholeArea));
+        tiles.add(new ManipulationTile("Force Happy Pawns", rimworldSaveManipulator::forceVeryHappyColonists));
         return tiles;
     }
 
@@ -47,9 +56,12 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         ListView<Object> saves = new ListView<>();
         Object[][] data = savesManager.loadSavesContent(savesLocation);
         for (Object[] item : data) {
-            saves.getItems().addAll(item[0]);
+            if ((String.valueOf(item[0]).indexOf(".rws") + ".rws".length() == String.valueOf(item[0]).length())) {
+                saves.getItems().addAll(item[0]);
+            }
         }
         labelSelectedSave = new Label();
+        labelSelectedSave.setText("Selected Save: NONE");
         saves.getSelectionModel().selectedItemProperty().addListener(e -> {
             selectedItem = String.valueOf(saves.getSelectionModel().getSelectedItem());
             labelSelectedSave.setText("Selected Save: " + selectedItem);
@@ -62,6 +74,7 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         FlowPane pane = new FlowPane();
         JFXButton buttonApplyManipulations = new JFXButton("Apply");
         List<ManipulationTile> tiles = getManipulatorList();
+        resizeManipulationTiles(tiles);
         pane.getChildren().addAll(tiles);
         buttonApplyManipulations.setOnAction(e -> {
             if (!selectedItem.isEmpty()) {
@@ -82,15 +95,29 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         return parent;
     }
 
-    private class ManipulationTile extends FlowPane {
-        private JFXToggleButton button;
-        private ActionPerformer action;
-        private String title;
+    private void resizeManipulationTiles(List<ManipulationTile> tiles) {
+        AtomicReference<Integer> width = new AtomicReference<>(0);
+        tiles.forEach(e -> {
+            if (width.get() < e.getTitle().length()) {
+                width.set(e.getTitle().length());
+            }
+        });
+        int endWidth = width.get() * 9;
+        System.out.println("End Result: " + endWidth);
+        tiles.forEach(e -> e.setWidth(endWidth));
+    }
+
+    private static class ManipulationTile extends FlowPane {
+        private final JFXToggleButton button;
+        private final ActionPerformer action;
+        private final String title;
         public ManipulationTile(String title, ActionPerformer action) {
             this.title = title;
             this.action = action;
             button = new JFXToggleButton();
-            getChildren().addAll(new Label(title), button);
+            getChildren().addAll(button, new Label(title));
+            setPrefWidth(80);
+            setMaxWidth(80);
         }
         public JFXToggleButton getToggleButton() {
             return button;
@@ -98,8 +125,12 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
         public ActionPerformer getAction() {
             return action;
         }
-        public String getButtonTitle() {
+        public String getTitle() {
             return title;
+        }
+        public void setWidth(int width) {
+            setPrefWidth(width);
+            setMaxWidth(width);
         }
     }
 }

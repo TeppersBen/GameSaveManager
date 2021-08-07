@@ -13,9 +13,9 @@ public class RimworldSaveManipulator {
      * Builds all buildings on the map, even frames that are not finished.
      */
     public void finishBuildings() {
-        int start = 0;
+        int start;
         int lastSegmentEnd = 0;
-        int oldSegmentLength = 0;
+        int oldSegmentLength;
         String segment;
         while ((start = saveFileContent.indexOf("<thing Class=\"Blueprint_Build\">", lastSegmentEnd)) != -1 || (start = saveFileContent.indexOf("<thing Class=\"Frame\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
@@ -77,10 +77,10 @@ public class RimworldSaveManipulator {
      * Cures: Injuries & Missing Parts
      */
     public void pawnsCureAllColonists() {
-        int start = 0;
+        int start;
         int lastSegmentEnd = 0;
         String segment;
-        int heathTrackerStart = 0;
+        int heathTrackerStart;
         while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
             if (segment.contains("<faction>Faction_11</faction>")) {
@@ -98,10 +98,10 @@ public class RimworldSaveManipulator {
      * Give all Loyalists 999 honor.
      */
     public void pawnsGiveAllLoyalists999Honor() {
-        int start = 0;
+        int start;
         int lastSegmentEnd = 0;
         String segment;
-        int seeker = 0;
+        int seeker;
         while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
 
@@ -124,10 +124,10 @@ public class RimworldSaveManipulator {
      * Maxes out all item stacks.
      */
     public void itemMaxOutStackCount() {
-        int start = 0;
+        int start;
         int lastSegmentEnd = 0;
         String segment;
-        int seeker = 0;
+        int seeker;
         while ((start = saveFileContent.indexOf("<thing Class=\"ThingWithComps\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
 
@@ -144,10 +144,10 @@ public class RimworldSaveManipulator {
      * Fully grows all plants.
      */
     public void plantForcedMaxGrowth() {
-        int start = 0;
+        int start;
         int lastSegmentEnd = 0;
         String segment;
-        int seeker = 0;
+        int seeker;
         while ((start = saveFileContent.indexOf("<thing Class=\"Plant\">", lastSegmentEnd)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
 
@@ -169,7 +169,7 @@ public class RimworldSaveManipulator {
     public void cleanWholeArea() {
         int start;
         int oldStart = 0;
-        int lastSegmentEnd = 0;
+        int lastSegmentEnd;
         String segment;
         while ((start = saveFileContent.indexOf("<thing Class=\"Filth\">", oldStart)) != -1) {
             segment = saveFileContent.substring(start, saveFileContent.indexOf("</thing>", start) + "</thing>".length());
@@ -187,7 +187,7 @@ public class RimworldSaveManipulator {
         int start;
         int lastSegmentEnd = 0;
         String segment;
-        int seeker = 0;
+        int seeker;
         int curStart;
         int curEnd;
         while ((start = saveFileContent.indexOf("<thing Class=\"Pawn\">", lastSegmentEnd)) != -1) {

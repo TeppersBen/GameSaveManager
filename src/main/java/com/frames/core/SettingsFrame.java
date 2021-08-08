@@ -21,11 +21,11 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
-public class AddGameFrame extends ScrollPane {
+public class SettingsFrame extends ScrollPane {
 
     private final Frame frame;
 
-    public AddGameFrame(Frame frame) {
+    public SettingsFrame(Frame frame) {
         this.frame = frame;
         setId("container");
         VBox vbox = new VBox();

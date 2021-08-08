@@ -1,6 +1,5 @@
 package com.frames.core;
 
-import com.frames.AddGameFrame;
 import com.frames.factorio.FactorioMainFrame;
 import com.frames.minecraft.MinecraftMainFrame;
 import com.frames.rimworld.RimworldMainFrame;
@@ -16,8 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextAlignment;
-
-import java.beans.PropertyEditorManager;
 
 public class Frame extends JFXTabPane {
 

@@ -103,7 +103,6 @@ public class RimworldSaveManipulatorFrame extends BorderPane {
             }
         });
         int endWidth = width.get() * 9;
-        System.out.println("End Result: " + endWidth);
         tiles.forEach(e -> e.setWidth(endWidth));
     }
 

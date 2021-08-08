@@ -6,6 +6,7 @@ import com.frames.rimworld.RimworldMainFrame;
 import com.frames.satisfactory.SatisfactoryMainFrame;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.managers.IOManager;
 import com.managers.PropertiesManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -36,6 +37,11 @@ public class SettingsFrame extends ScrollPane {
                 createGameTile(new SatisfactoryMainFrame(), "Satisfactory", "/icons/gameSections/satisfactory.png"),
                 createGameTile(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png")
         );
+        JFXButton buttonWipeData = new JFXButton("Wipe Application Data");
+        buttonWipeData.setOnAction(e -> {
+            IOManager.wipeApplicationData();
+        });
+        vbox.getChildren().add(buttonWipeData);
         setContent(vbox);
         viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {
             Node content = getContent();

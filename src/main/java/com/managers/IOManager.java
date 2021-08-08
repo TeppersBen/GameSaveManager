@@ -1,6 +1,9 @@
 package com.managers;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -95,7 +98,12 @@ public class IOManager {
     }
 
     public static void wipeApplicationData() {
-
+        try {
+            File folder = new File(System.getProperty("user.home") + "\\GameSaveManager");
+            FileUtils.deleteDirectory(folder);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

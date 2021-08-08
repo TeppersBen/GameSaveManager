@@ -73,7 +73,7 @@ public class IOManager {
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                stringBuilder.append(data + "\n");
+                stringBuilder.append(data).append("\n");
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -92,6 +92,10 @@ public class IOManager {
             System.err.println("An error occurred.");
             e.printStackTrace();
         }
+    }
+
+    public static void wipeApplicationData() {
+
     }
 
 }

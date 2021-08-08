@@ -17,8 +17,8 @@ public class PropertiesManager {
         try {
             baseLocation = System.getProperty("user.home") + "\\GameSaveManager";
             if (!new File(baseLocation + "\\config.properties").exists()) {
-                boolean failedToProcess = new File(baseLocation).mkdirs();
-                if (!failedToProcess) {
+                boolean dirsCreated = new File(baseLocation).mkdirs();
+                if (dirsCreated) {
                     String source = Objects.requireNonNull(PropertiesManager.class.getClassLoader().getResource("config.properties")).toString().substring(8);
                     TreeCopyFileVisitor fileVisitor = new TreeCopyFileVisitor(
                             source,
@@ -28,14 +28,9 @@ public class PropertiesManager {
             }
 
             properties = new Properties();
-            String fileName = "config.properties";
             InputStream inputStream = new FileInputStream(baseLocation+"\\config.properties");
 
-            if (inputStream != null) {
-                properties.load(inputStream);
-            } else {
-                throw new FileNotFoundException("Property file " + fileName + " not found!");
-            }
+            properties.load(inputStream);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -47,7 +47,7 @@ public class Frame extends JFXTabPane {
         }
 
         if (gameTabs.isEmpty() || gameTabs.equalsIgnoreCase("AddGameFrame")) {
-            createCell(new AddGameFrame(this), "Settings", "/icons/gears.png");
+            createCell(new SettingsFrame(this), "Settings", "/icons/gears.png");
         }
     }
 
@@ -63,7 +63,7 @@ public class Frame extends JFXTabPane {
                 getTabs().remove(getTabs().size()-1);
             }
             createCell(node, title, iconPath);
-            createCell(new AddGameFrame(this), "Settings", "/icons/gears.png");
+            createCell(new SettingsFrame(this), "Settings", "/icons/gears.png");
 
             StringBuilder tabs = new StringBuilder();
             for (Tab tab : getTabs()) {

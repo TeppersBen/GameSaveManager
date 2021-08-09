@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +23,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
-public class SettingsFrame extends ScrollPane {
+public class SettingsFrame extends BorderPane {
 
     private final Frame frame;
 
@@ -48,13 +49,17 @@ public class SettingsFrame extends ScrollPane {
         FlowPane buttonPane = new FlowPane();
         buttonPane.getChildren().addAll(buttonOpenApplicationFolder, buttonWipeData);
 
-        vbox.getChildren().add(buttonPane);
-        setContent(vbox);
-        viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {
-            Node content = getContent();
-            setFitToWidth(content.prefWidth(-1) < t1.getWidth());
-            setFitToHeight(content.prefHeight(-1) < t1.getHeight());
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setId("container");
+        scrollPane.setContent(vbox);
+        setCenter(scrollPane);
+        scrollPane.viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {
+            Node content = scrollPane.getContent();
+            scrollPane.setFitToWidth(content.prefWidth(-1) < t1.getWidth());
+            scrollPane.setFitToHeight(content.prefHeight(-1) < t1.getHeight());
         });
+
+        setBottom(buttonPane);
     }
 
     private Node createGameTile(Node node, String title, String iconPath) {
@@ -78,15 +83,20 @@ public class SettingsFrame extends ScrollPane {
         JFXButton button = new JFXButton("");
         button.setPrefWidth(50);
         if (PropertiesManager.getProperty("gameTabs").contains(title)) {
+            button.setId("button-remove");
             button.setText("-");
         } else {
+            button.setId("button-add");
             button.setText("+");
         }
+        button.setStyle("-fx-font-weight: bold; -fx-font-size: 20;");
         button.setOnAction(e -> {
             if (PropertiesManager.getProperty("gameTabs").contains(title)) {
+                button.setId("button-add");
                 button.setText("+");
                 frame.removeGame(node);
             } else {
+                button.setId("button-remove");
                 button.setText("-");
                 frame.addGame(node, title, iconPath);
             }

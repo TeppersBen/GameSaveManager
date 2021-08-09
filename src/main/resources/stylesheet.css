@@ -65,14 +65,24 @@ JFXTextField {
     -fx-text-fill: white;
 }
 
+JFXButton {
+    -fx-border-color: white;
+    -fx-text-fill: white;
+}
+
 #button-permanently-remove {
     -fx-border-color: red;
     -fx-text-fill: red;
 }
 
-JFXButton {
-    -fx-border-color: white;
-    -fx-text-fill: white;
+#button-remove {
+    -fx-border-color: none;
+    -fx-text-fill: red;
+}
+
+#button-add {
+    -fx-border-color: none;
+    -fx-text-fill: green;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {

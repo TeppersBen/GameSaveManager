@@ -2,6 +2,7 @@ package com.managers;
 
 import org.apache.commons.io.FileUtils;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -95,6 +96,15 @@ public class IOManager {
             System.err.println("An error occurred.");
             e.printStackTrace();
         }
+    }
+
+    public static void openApplicationFolder() {
+        try {
+            Desktop.getDesktop().open(new File(PropertiesManager.baseLocation));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     public static void wipeApplicationData() {

@@ -38,9 +38,8 @@ public class SettingsFrame extends ScrollPane {
                 createGameTile(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png")
         );
         JFXButton buttonWipeData = new JFXButton("Wipe Application Data");
-        buttonWipeData.setOnAction(e -> {
-            IOManager.wipeApplicationData();
-        });
+        buttonWipeData.setId("remove-icon");
+        buttonWipeData.setOnAction(e -> IOManager.wipeApplicationData());
         vbox.getChildren().add(buttonWipeData);
         setContent(vbox);
         viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {

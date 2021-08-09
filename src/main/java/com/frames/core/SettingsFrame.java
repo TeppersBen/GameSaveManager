@@ -37,10 +37,18 @@ public class SettingsFrame extends ScrollPane {
                 createGameTile(new SatisfactoryMainFrame(), "Satisfactory", "/icons/gameSections/satisfactory.png"),
                 createGameTile(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png")
         );
+
         JFXButton buttonWipeData = new JFXButton("Wipe Application Data");
         buttonWipeData.setId("remove-icon");
         buttonWipeData.setOnAction(e -> IOManager.wipeApplicationData());
-        vbox.getChildren().add(buttonWipeData);
+
+        JFXButton buttonOpenApplicationFolder = new JFXButton("Open Application Folder");
+        buttonOpenApplicationFolder.setOnAction(e -> IOManager.openApplicationFolder());
+
+        FlowPane buttonPane = new FlowPane();
+        buttonPane.getChildren().addAll(buttonOpenApplicationFolder, buttonWipeData);
+
+        vbox.getChildren().add(buttonPane);
         setContent(vbox);
         viewportBoundsProperty().addListener((observableValue, bounds, t1) -> {
             Node content = getContent();

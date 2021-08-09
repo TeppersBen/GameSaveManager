@@ -39,7 +39,7 @@ public class SettingsFrame extends ScrollPane {
         );
 
         JFXButton buttonWipeData = new JFXButton("Wipe Application Data");
-        buttonWipeData.setId("remove-icon");
+        buttonWipeData.setId("button-permanently-remove");
         buttonWipeData.setOnAction(e -> IOManager.wipeApplicationData());
 
         JFXButton buttonOpenApplicationFolder = new JFXButton("Open Application Folder");

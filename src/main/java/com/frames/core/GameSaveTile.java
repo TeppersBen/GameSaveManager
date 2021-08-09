@@ -47,7 +47,7 @@ public class GameSaveTile extends BorderPane {
 
     private void initComponents() {
         deleteWorldFile = new JFXButton("X");
-        deleteWorldFile.setId("remove-icon");
+        deleteWorldFile.setId("button-permanently-remove");
         replaceWorldWithLatestBackup = new JFXButton("Restore World");
 
         if (isBackup) {

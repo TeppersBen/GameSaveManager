@@ -65,9 +65,9 @@ JFXTextField {
     -fx-text-fill: white;
 }
 
-#remove-icon {
+#button-permanently-remove {
     -fx-border-color: red;
-    -fx-text-fill:red;
+    -fx-text-fill: red;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {

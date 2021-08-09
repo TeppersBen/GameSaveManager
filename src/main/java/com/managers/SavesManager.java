@@ -135,6 +135,7 @@ public class SavesManager {
     public String replaceWorldWithBackup(String savesFolder, String gameName, String worldName) {
         try {
             String backupFolder = backupCoreFolder + gameName;
+            loadSavesContent(backupFolder);
             List<Path> availableBackups = files.stream().filter(e -> e.toFile().getName().contains(worldName)).collect(Collectors.toList());
             if (availableBackups.size() == 0) {
                 return "No backups available for this world!";

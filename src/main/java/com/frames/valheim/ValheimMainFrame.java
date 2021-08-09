@@ -4,6 +4,6 @@ import com.frames.core.TabFrame;
 
 public class ValheimMainFrame extends TabFrame {
     public ValheimMainFrame() {
-        super("pathToValheimSaveFolder", "Valheim");
+        super("pathToValheimSaveFolder", "Valheim", "db");
     }
 }

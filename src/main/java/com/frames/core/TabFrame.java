@@ -7,7 +7,11 @@ import javafx.scene.control.Tab;
 public class TabFrame extends JFXTabPane {
 
     public TabFrame(String saveFolder, String gameName) {
-        Tab savesTab = new Tab("Save Folder", new SaveFolderFrame(saveFolder, gameName));
+        this(saveFolder, gameName, "");
+    }
+
+    public TabFrame(String saveFolder, String gameName, String extension) {
+        Tab savesTab = new Tab("Save Folder", new SaveFolderFrame(saveFolder, gameName, extension));
         Tab backupTab = new Tab("Backup Folder", new BackupFolderFrame(saveFolder, gameName));
 
         getTabs().addAll(savesTab, backupTab);

@@ -28,10 +28,16 @@ public class SaveFolderFrame extends BorderPane {
     protected BorderPane bottomPane;
     protected String saveFolderPropertyName;
     protected String gameName;
+    protected String extension;
 
     public SaveFolderFrame(String saveFolderPropertyName, String gameName) {
+        this(saveFolderPropertyName, gameName, "");
+    }
+
+    public SaveFolderFrame(String saveFolderPropertyName, String gameName, String extension) {
         this.saveFolderPropertyName = saveFolderPropertyName;
         this.gameName = gameName;
+        this.extension = extension;
         initComponents();
         initListeners();
         layoutComponents();
@@ -46,14 +52,19 @@ public class SaveFolderFrame extends BorderPane {
             worldsBox.getChildren().removeAll(worldTileList);
             worldTileList = new ArrayList<>();
             for (Object[] item : data) {
-                GameSaveTile tile;
-                if (location.contains("minecraft")) {
-                    tile = new MinecraftGameSaveTile(location + item[0].toString(), item, this, false);
-                } else {
-                    tile = new GameSaveTile(location + item[0].toString(), item, this, false);
+                if (item[0].toString().contains(extension)
+                && item[0].toString().indexOf(extension)+extension.length() == item[0].toString().length()
+                || extension.equalsIgnoreCase("")) {
+                    GameSaveTile tile;
+                    if (location.contains("minecraft")) {
+                        tile = new MinecraftGameSaveTile(location + item[0].toString(), item, this, false);
+                    } else {
+                        tile = new GameSaveTile(location + item[0].toString(), item, this, false);
+                    }
+                    worldTileList.add(tile);
+                    worldsBox.getChildren().add(tile);
                 }
-                worldTileList.add(tile);
-                worldsBox.getChildren().add(tile);
+
             }
 
             long sum = 0;

@@ -2,7 +2,6 @@ package com.frames.core;
 
 import com.frames.minecraft.MinecraftGameSaveTile;
 import com.managers.IOManager;
-import com.managers.PropertiesManager;
 import com.managers.SavesManager;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;

@@ -70,6 +70,11 @@ JFXTextField {
     -fx-text-fill: red;
 }
 
+JFXButton {
+    -fx-border-color: white;
+    -fx-text-fill: white;
+}
+
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: #5f5f61;
     -fx-text-fill: white;

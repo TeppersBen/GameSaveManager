@@ -4,6 +4,8 @@ import com.frames.factorio.FactorioMainFrame;
 import com.frames.minecraft.MinecraftMainFrame;
 import com.frames.rimworld.RimworldMainFrame;
 import com.frames.satisfactory.SatisfactoryMainFrame;
+import com.frames.sims4.Sims4MainFrame;
+import com.frames.valheim.ValheimMainFrame;
 import com.jfoenix.controls.JFXTabPane;
 import com.managers.PropertiesManager;
 import javafx.geometry.Insets;
@@ -45,7 +47,13 @@ public class Frame extends JFXTabPane {
                 case "RimworldMainFrame":
                     addGame(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png");
                     break;
-                case "SettingsFrame":
+                case "Sims4MainFrame":
+                    addGame(new Sims4MainFrame(), "Sims4", "/icons/gameSections/Sims4.png");
+                    break;
+                case "Valheim":
+                    addGame(new ValheimMainFrame(), "Valheim", "/icons/gameSections/Valheim.png");
+                    break;
+                default:
                     addGame(new SettingsFrame(this), "Settings", "/icons/gears.png");
                     break;
             }

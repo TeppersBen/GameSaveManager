@@ -4,6 +4,8 @@ import com.frames.factorio.FactorioMainFrame;
 import com.frames.minecraft.MinecraftMainFrame;
 import com.frames.rimworld.RimworldMainFrame;
 import com.frames.satisfactory.SatisfactoryMainFrame;
+import com.frames.sims4.Sims4MainFrame;
+import com.frames.valheim.ValheimMainFrame;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.managers.IOManager;
@@ -36,7 +38,9 @@ public class SettingsFrame extends BorderPane {
                 createGameTile(new MinecraftMainFrame(), "Minecraft", "/icons/gameSections/minecraft.jpg"),
                 createGameTile(new FactorioMainFrame(), "Factorio", "/icons/gameSections/factorio.png"),
                 createGameTile(new SatisfactoryMainFrame(), "Satisfactory", "/icons/gameSections/satisfactory.png"),
-                createGameTile(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png")
+                createGameTile(new RimworldMainFrame(), "Rimworld", "/icons/gameSections/Rimworld.png"),
+                createGameTile(new Sims4MainFrame(), "Sims4", "/icons/gameSections/Sims4.png"),
+                createGameTile(new ValheimMainFrame(), "Valheim", "/icons/gameSections/Valheim.png")
         );
 
         JFXButton buttonWipeData = new JFXButton("Wipe Application Data");

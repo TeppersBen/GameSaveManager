@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -171,6 +172,22 @@ public class SavesManager {
         } catch (IOException ex) {
             ex.printStackTrace();
             return "something went wrong!";
+        }
+    }
+
+    public String wipeSims4Checkpoints(String path, String gameName) {
+        try {
+            List<Path> checkpoints = Files.list(new File(path.substring(0,path.length()-gameName.length())).toPath()).collect(Collectors.toList());
+            checkpoints = checkpoints.stream().filter(c -> c.getFileName().toString().contains(gameName) && c.getFileName().toString().contains(".save.ver")).collect(Collectors.toList());
+            AtomicBoolean somethingHasBeenRemoved = new AtomicBoolean(false);
+            checkpoints.forEach(e -> somethingHasBeenRemoved.set(e.toFile().delete()));
+            if (somethingHasBeenRemoved.get()) {
+                return "Checkpoints were wiped.";
+            }
+            return "There were no checkpoints for this save.";
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
         }
     }
 

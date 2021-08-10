@@ -1,6 +1,7 @@
 package com.frames.core;
 
 import com.frames.minecraft.MinecraftGameSaveTile;
+import com.frames.sims4.Sims4GameSaveTile;
 import com.jfoenix.controls.JFXButton;
 import com.managers.PropertiesManager;
 import com.managers.SavesManager;
@@ -51,15 +52,19 @@ public class SaveFolderFrame extends BorderPane {
         if (data != null) {
             worldsBox.getChildren().removeAll(worldTileList);
             worldTileList = new ArrayList<>();
+            String path;
             for (Object[] item : data) {
                 if (item[0].toString().contains(extension)
                 && item[0].toString().indexOf(extension)+extension.length() == item[0].toString().length()
                 || extension.equalsIgnoreCase("")) {
                     GameSaveTile tile;
-                    if (location.contains("minecraft")) {
-                        tile = new MinecraftGameSaveTile(location + item[0].toString(), item, this, false);
+                    path = location + item[0].toString();
+                    if (gameName.equalsIgnoreCase("minecraft")) {
+                        tile = new MinecraftGameSaveTile(path, item, this, false);
+                    } else if (gameName.equalsIgnoreCase("sims4")) {
+                        tile = new Sims4GameSaveTile(path, item, this, false);
                     } else {
-                        tile = new GameSaveTile(location + item[0].toString(), item, this, false);
+                        tile = new GameSaveTile(path, item, this, false);
                     }
                     worldTileList.add(tile);
                     worldsBox.getChildren().add(tile);

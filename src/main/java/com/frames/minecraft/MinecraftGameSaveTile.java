@@ -11,7 +11,7 @@ public class MinecraftGameSaveTile extends GameSaveTile {
         super(path, data, parentFrame, isBackup);
         if (!isBackup) {
             addButton(new JFXButton("Chunk List"), () -> {
-                parentFrame.getScrollPane().setContent(new MinecraftChunksFrame(parentFrame, path));
+                parentFrame.getScrollPane().setContent(new MinecraftChunksFrame(parentFrame, path+data[0].toString()));
                 parentFrame.setCenter(parentFrame.getScrollPane());
                 parentFrame.getBottomPane().setVisible(false);
             });

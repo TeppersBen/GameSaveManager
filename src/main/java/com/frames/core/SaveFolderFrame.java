@@ -52,19 +52,17 @@ public class SaveFolderFrame extends BorderPane {
         if (data != null) {
             worldsBox.getChildren().removeAll(worldTileList);
             worldTileList = new ArrayList<>();
-            String path;
             for (Object[] item : data) {
                 if (item[0].toString().contains(extension)
                 && item[0].toString().indexOf(extension)+extension.length() == item[0].toString().length()
                 || extension.equalsIgnoreCase("")) {
                     GameSaveTile tile;
-                    path = location + item[0].toString();
                     if (gameName.equalsIgnoreCase("minecraft")) {
-                        tile = new MinecraftGameSaveTile(path, item, this, false);
+                        tile = new MinecraftGameSaveTile(location, item, this, false);
                     } else if (gameName.equalsIgnoreCase("sims4")) {
-                        tile = new Sims4GameSaveTile(path, item, this, false);
+                        tile = new Sims4GameSaveTile(location, item, this, false);
                     } else {
-                        tile = new GameSaveTile(path, item, this, false);
+                        tile = new GameSaveTile(location, item, this, false);
                     }
                     worldTileList.add(tile);
                     worldsBox.getChildren().add(tile);

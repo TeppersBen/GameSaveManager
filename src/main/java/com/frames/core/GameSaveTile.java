@@ -78,7 +78,6 @@ public class GameSaveTile extends BorderPane {
             alert.setContentText("This will clean up " + worldSize + " MiB from your harddrive.");
             alert.setHeaderText("You are about to remove " + worldName + ", are you sure?");
             if (alert.showAndWait().get() == ButtonType.YES) {
-                sourcePath = sourcePath.substring(0, sourcePath.length() - String.valueOf(data[0]).length());
                 parentFrame.setActionPerformedText(new SavesManager().purgeWorldFolder(sourcePath, String.valueOf(data[0])));
                 parentFrame.refreshContent();
             }

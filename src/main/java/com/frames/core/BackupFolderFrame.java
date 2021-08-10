@@ -33,9 +33,9 @@ public class BackupFolderFrame extends SaveFolderFrame {
             for (Object[] item : data) {
                 GameSaveTile tile;
                 if (backupFolderLocation.contains("minecraft")) {
-                    tile = new MinecraftGameSaveTile(backupFolderLocation + item[0].toString(), item, this, true);
+                    tile = new MinecraftGameSaveTile(backupFolderLocation, item, this, true);
                 } else {
-                    tile = new GameSaveTile(backupFolderLocation + item[0].toString(), item, this, true);
+                    tile = new GameSaveTile(backupFolderLocation, item, this, true);
                 }
                 if (previousName.equalsIgnoreCase("/") || !previousName.equalsIgnoreCase(determineSectionName(tile))) {
                     addBackupSection(tile);
